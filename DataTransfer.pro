@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    fileexplorermodelwidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    fileexplorer.h \
+    fileexplorermodelwidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    fileexplorermodelwidget.ui

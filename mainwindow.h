@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include <QMdiArea>
+
+#include "fileexplorermodelwidget.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,6 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    FileExplorerModelWidget *model1;
+    FileExplorerModelWidget *model2;
 };
 
 #endif // MAINWINDOW_H
