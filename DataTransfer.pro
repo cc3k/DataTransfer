@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    fileexplorermodelwidget.cpp
+    fileexplorermodelwidget.cpp \
+    customtableview.cpp
 
 HEADERS  += mainwindow.h \
     fileexplorer.h \
-    fileexplorermodelwidget.h
+    fileexplorermodelwidget.h \
+    customtableview.h
 
 FORMS    += mainwindow.ui \
     fileexplorermodelwidget.ui
