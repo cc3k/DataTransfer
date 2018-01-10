@@ -21,6 +21,9 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QTableView" name="tableView"/>
+      </item>
+      <item>
        <widget class="QTreeView" name="treeView"/>
       </item>
      </layout>
@@ -32,28 +35,6 @@
       <string/>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="buttonDirMode">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>RO</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QLabel" name="labelInfo">
         <property name="frameShape">
@@ -78,31 +59,21 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonDirRoot">
+       <widget class="QPushButton" name="buttonDirMode">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>35</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>\</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="buttonDirUp">
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>..</string>
+         <string>RO</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>

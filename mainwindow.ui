@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayoutStation">
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -46,7 +46,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>ДИСК:</string>
@@ -66,7 +66,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutButton" stretch="0,0,0,0,0,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinimumSize</enum>
       </property>

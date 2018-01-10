@@ -2,7 +2,6 @@
 #define FILEEXPLORERMODELWIDGET_H
 
 #include <QWidget>
-#include <QDialog>
 #include <QtCore>
 #include <QtGui>
 #include <QDirModel>
@@ -27,15 +26,16 @@ public:
 
 
 private slots:
-    void on_buttonDirRoot_clicked();
-    void on_buttonDirUp_clicked();
     void on_buttonDirMode_clicked();
+
+    void on_tableView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::FileExplorerModelWidget *ui;
 
     QDirModel *dirModel;
     QFileSystemModel *fileSystemModel;
+    QSortFilterProxyModel *proxyFileSystemModel;
     QModelIndex index;
 
     QString rootDir;

@@ -7,22 +7,29 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    rootDir = "/home/projekt/Workspace";
+    rootDir = "/home/projekt/";
 
-    isReadOnly = false;
+    isReadOnly = true;
 
     dirModel = new QDirModel(this);
     dirModel->setReadOnly(isReadOnly);
-    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-
+    dirModel->setSorting(QDir::DirsFirst);
+    dirModel->setFilter(QDir::AllEntries | QDir::NoDot);
 
     fileSystemModel = new QFileSystemModel(this);
+    fileSystemModel->setReadOnly(isReadOnly);
     fileSystemModel->setRootPath(QDir::currentPath());
     fileSystemModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-    fileSystemModel->setReadOnly(isReadOnly);
+
+    proxyFileSystemModel = new QSortFilterProxyModel();
+    proxyFileSystemModel->setSourceModel(fileSystemModel);
 
     ui->treeView->setModel(fileSystemModel);
     ui->treeView->setRootIndex(fileSystemModel->index(rootDir));
+
+    ui->tableView->setModel(dirModel);
+    ui->tableView->setRootIndex(dirModel->index(rootDir));
+    ui->tableView->verticalHeader()->hide();
 
     updateModel();
 }
@@ -38,16 +45,6 @@ void FileExplorerModelWidget::setRoot(QString rootDir)
     updateModel();
 }
 
-void FileExplorerModelWidget::on_buttonDirRoot_clicked()
-{
-    updateModel();
-}
-
-void FileExplorerModelWidget::on_buttonDirUp_clicked()
-{
-
-}
-
 void FileExplorerModelWidget::on_buttonDirMode_clicked()
 {
     isReadOnly=!isReadOnly;
@@ -57,8 +54,8 @@ void FileExplorerModelWidget::on_buttonDirMode_clicked()
 void FileExplorerModelWidget::updateModel()
 {
     updateDirMode();
-    updateRootDir();
     ui->groupBoxFileSystem->setTitle(rootDir);
+    updateRootDir();
 }
 
 void FileExplorerModelWidget::updateRootDir()
@@ -68,6 +65,12 @@ void FileExplorerModelWidget::updateRootDir()
     ui->treeView->scrollTo(index);
     ui->treeView->setCurrentIndex(index);
     ui->treeView->resizeColumnToContents(0);
+
+    index = dirModel->index(rootDir);
+    ui->tableView->setRootIndex(index);
+    ui->tableView->scrollTo(index);
+    ui->tableView->setCurrentIndex(index);
+    ui->tableView->resizeColumnToContents(0);
 }
 
 void FileExplorerModelWidget::updateDirMode()
@@ -81,5 +84,23 @@ void FileExplorerModelWidget::updateDirMode()
     {
         ui->buttonDirMode->setText("RW");
     }
+
+    fileSystemModel->setReadOnly(isReadOnly);
+    qDebug() << "fileSystemModel->setReadOnly" << isReadOnly;
+
     dirModel->setReadOnly(isReadOnly);
+    qDebug() << "dirModel->setReadOnly" << isReadOnly;
+}
+
+void FileExplorerModelWidget::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    qDebug() << index;
+    ui->tableView->setModel(dirModel);
+    ui->tableView->setRootIndex(index);
+    ui->tableView->scrollTo(index);
+    ui->tableView->setCurrentIndex(index);
+
+    //ui->tableView->scrollTo(index);
+    //ui->tableView->setCurrentIndex(index);
+    //ui->tableView->resizeColumnToContents(0);
 }

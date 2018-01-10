@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowTitle("ЮСИЯ.ХХХХХ-01 ФПО ВКС");
+    setWindowState(Qt::WindowMaximized);
 
     model1 = new FileExplorerModelWidget;
     model2 = new FileExplorerModelWidget;
