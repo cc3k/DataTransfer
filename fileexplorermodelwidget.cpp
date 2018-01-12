@@ -13,24 +13,30 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
 
     dirModel = new QDirModel(this);
     dirModel->setReadOnly(isReadOnly);
-    dirModel->setSorting(QDir::DirsFirst);
-    dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+    dirModel->setResolveSymlinks(false);
+    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
 
     tableView = new CustomTableView;
-    connect(tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_tableView_doubleClicked(QModelIndex)));
-    connect(tableView, SIGNAL(keyEnter()), this, SLOT(on_enter_pressed()));
+    connect(tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableView_doubleClicked(QModelIndex)));
+    connect(tableView,SIGNAL(clicked(QModelIndex)), this, SLOT(tableView_clicked(QModelIndex)));
+    connect(tableView, SIGNAL(keyEnter()), this, SLOT(enter_pressed()));
+    connect(tableView, SIGNAL(keyLeft()), this, SLOT(dirUp()));
+
+
 
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->addWidget(tableView);
     ui->groupBoxFileSystem->setLayout(vbox);
 
     tableView->setModel(dirModel);
-    tableView->setRootIndex(dirModel->index(rootDir));
     tableView->verticalHeader()->hide();
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width()/2);
+    tableView->setSelectionMode(QAbstractItemView::NoSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
 
     tableView->setAlternatingRowColors(true);
     tableView->setSortingEnabled(true);
@@ -39,13 +45,11 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
 
     watcher = new QFileSystemWatcher;
     watcher->addPath(rootDir);
-    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(updateCurrentDir(QString)));
+    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
 
     updateModel();
     updateRootDir();
 
-    //QShortcut *shortcutEnter = new QShortcut(QKeySequence("ENTER"), ui->tableView);
-    //connect(shortcutEnter, SIGNAL(activated()), this, SLOT(on_enter_pressed()));
 }
 
 FileExplorerModelWidget::~FileExplorerModelWidget()
@@ -57,6 +61,11 @@ void FileExplorerModelWidget::setRoot(QString rootDir)
 {
     this->rootDir = rootDir;
     updateModel();
+}
+
+void FileExplorerModelWidget::setFocus()
+{
+    tableView->setFocus();
 }
 
 void FileExplorerModelWidget::on_buttonDirMode_clicked()
@@ -73,9 +82,11 @@ void FileExplorerModelWidget::updateModel()
 
 void FileExplorerModelWidget::updateRootDir()
 {
+    qDebug() << "updateRootDir()";
     index = dirModel->index(rootDir);
     tableView->setRootIndex(index);
-    dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+    dirModel->setFilter(QDir::Dirs| QDir::Files | QDir::NoDotAndDotDot);
+    tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
 }
 
 void FileExplorerModelWidget::updateDirMode()
@@ -93,34 +104,28 @@ void FileExplorerModelWidget::updateDirMode()
     dirModel->setReadOnly(isReadOnly);
 }
 
-void FileExplorerModelWidget::updateCurrentDir(const QString &string)
+void FileExplorerModelWidget::dirUpdate(const QString &string)
 {
-    dirModel->refresh(dirModel->index(string));
-}
-
-void FileExplorerModelWidget::on_tableView_doubleClicked(const QModelIndex &index)
-{
-
-    if (dirModel->filePath(index) == rootDir)
+    if (dirModel->index(string).isValid())
     {
-        dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+        dirModel->refresh(dirModel->index(string));
     }
     else
     {
-        dirModel->setFilter(QDir::AllEntries | QDir::NoDot);
+        updateRootDir();
+    }
+}
+
+void FileExplorerModelWidget::dirChange(QModelIndex index)
+{
+    if (!index.isValid() || index.column() !=0)
+    {
+        return;
     }
 
-    tableView->setRootIndex(index);
-}
+    tableView->clearSelection();
 
-void FileExplorerModelWidget::on_buttonRoot_clicked()
-{
-    updateRootDir();
-}
-
-void FileExplorerModelWidget::on_enter_pressed()
-{
-    qDebug() << "enter";
+    ui->groupBoxFileSystem->setTitle(dirModel->filePath(tableView->currentIndex()));
 
     if (dirModel->filePath(tableView->currentIndex()) == rootDir)
     {
@@ -131,6 +136,43 @@ void FileExplorerModelWidget::on_enter_pressed()
         dirModel->setFilter(QDir::AllEntries | QDir::NoDot);
     }
 
+    watcher->removePath(dirModel->filePath(tableView->rootIndex()));
+
     tableView->setRootIndex(tableView->currentIndex());
+
+    tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
+
+    watcher->addPath(dirModel->filePath(tableView->rootIndex()));
 }
+
+void FileExplorerModelWidget::dirUp()
+{
+    tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
+
+    if (dirModel->fileName(tableView->currentIndex()) == "..")
+    {
+        dirChange(tableView->currentIndex());
+    }
+}
+
+void FileExplorerModelWidget::tableView_doubleClicked(const QModelIndex &index)
+{
+    dirChange(index);
+}
+
+void FileExplorerModelWidget::tableView_clicked(const QModelIndex &index)
+{
+    tableView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select);
+}
+
+void FileExplorerModelWidget::on_buttonRoot_clicked()
+{
+    updateRootDir();
+}
+
+void FileExplorerModelWidget::enter_pressed()
+{
+    dirChange(tableView->currentIndex());
+}
+
 

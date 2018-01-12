@@ -18,6 +18,7 @@ public:
 signals:
     void keyTab();
     void keyEnter();
+    void keyLeft();
 };
 
 #endif // CUSTOMTABLEVIEW_H

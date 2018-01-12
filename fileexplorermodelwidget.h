@@ -28,12 +28,18 @@ public:
 
     void setRoot(QString rootDir);
 
+public slots:
+    void setFocus();
 
 private slots:
     void on_buttonDirMode_clicked();
-    void on_tableView_doubleClicked(const QModelIndex &index);
     void on_buttonRoot_clicked();
-    void on_enter_pressed();
+    void enter_pressed();
+    void tableView_doubleClicked(const QModelIndex &index);
+    void tableView_clicked(const QModelIndex &index);
+    void dirUpdate(const QString &string);
+    void dirChange(QModelIndex index);
+    void dirUp();
 
 private:
     Ui::FileExplorerModelWidget *ui;
@@ -41,22 +47,19 @@ private:
     QDirModel *dirModel;
     QFileSystemWatcher *watcher;
     QModelIndex index;
-    //QTableView *tableView;
-
     CustomTableView *tableView;
 
     QString rootDir;
     QString header;
     bool isReadOnly;
 
+    int dirCount;
+    int fileCount;
+
     void updateModel();
 
     void updateRootDir();
     void updateDirMode();
-
-private slots:
-    void updateCurrentDir(const QString &string);
-
 };
 
 #endif // FILEEXPLORERMODELWIDGET_H

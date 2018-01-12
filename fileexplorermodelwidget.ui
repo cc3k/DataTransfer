@@ -19,6 +19,9 @@
      <property name="title">
       <string>Файловая система</string>
      </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
