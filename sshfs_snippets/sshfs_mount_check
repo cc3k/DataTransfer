@@ -1,0 +1,5 @@
+if grep -qs '/mnt/local' /proc/mounts; then
+    echo "It's mounted."
+else
+    echo "It's not mounted."
+fi
