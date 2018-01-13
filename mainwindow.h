@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QShortcut>
 #include <QGroupBox>
-#include "fileexplorermodelwidget.h"
+#include "filesystemwidget.h"
 #include "filesystemmountpoint.h"
 
 namespace Ui {
@@ -28,8 +28,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    FileExplorerModelWidget *modelLeft;
-    FileExplorerModelWidget *modelRight;
+    FileSystemWidget *modelLeft;
+    FileSystemWidget *modelRight;
     QGroupBox *emptyFileExplorerLeft;
     QGroupBox *emptyFileExplorerRight;
 

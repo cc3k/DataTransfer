@@ -1,15 +1,14 @@
-#include "fileexplorermodelwidget.h"
-#include "ui_fileexplorermodelwidget.h"
+#include "filesystemwidget.h"
+#include "ui_filesystemwidget.h"
 
-FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
+FileSystemWidget::FileSystemWidget(QString root, bool isReadOnly, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FileExplorerModelWidget)
+    ui(new Ui::FileSystemWidget)
 {
     ui->setupUi(this);
 
-    isReadOnly = true;
-
-    rootDir = "/mnt";
+    this->root = root;
+    this->isReadOnly = isReadOnly;
 
     tableView = new CustomTableView;
     connect(tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableView_doubleClicked(QModelIndex)));
@@ -44,57 +43,50 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
 
 
     watcher = new QFileSystemWatcher;
-    watcher->addPath(rootDir);
+    watcher->addPath(root);
     connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
 
     updateModel();
     updateRootDir();
 
+    if (dirModel->filePath(tableView->currentIndex().parent()) != root)
+    {
+        qDebug() << "error open " << root;
+    }
 }
 
-FileExplorerModelWidget::~FileExplorerModelWidget()
+FileSystemWidget::~FileSystemWidget()
 {
     delete ui;
 }
 
-void FileExplorerModelWidget::setRoot(QString rootDir)
-{
-    this->rootDir = rootDir;
-    updateModel();
-}
-
-const QString FileExplorerModelWidget::getRootDir()
-{
-    return rootDir;
-}
-
-void FileExplorerModelWidget::setFocus()
+void FileSystemWidget::setFocus()
 {
     tableView->setFocus();
 }
 
-void FileExplorerModelWidget::on_buttonDirMode_clicked()
+void FileSystemWidget::on_buttonDirMode_clicked()
 {
     isReadOnly=!isReadOnly;
     updateModel();
 }
 
-void FileExplorerModelWidget::updateModel()
+void FileSystemWidget::updateModel()
 {
     updateDirMode();
-    ui->groupBoxFileSystem->setTitle(rootDir);
+    ui->groupBoxFileSystem->setTitle(root);
 }
 
-void FileExplorerModelWidget::updateRootDir()
+void FileSystemWidget::updateRootDir()
 {
 
-    index = dirModel->index(rootDir);
+    index = dirModel->index(root);
     tableView->setRootIndex(index);
     dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
 }
 
-void FileExplorerModelWidget::updateDirMode()
+void FileSystemWidget::updateDirMode()
 {
     if (isReadOnly)
     {
@@ -109,7 +101,7 @@ void FileExplorerModelWidget::updateDirMode()
     dirModel->setReadOnly(isReadOnly);
 }
 
-void FileExplorerModelWidget::dirUpdate(const QString &string)
+void FileSystemWidget::dirUpdate(const QString &string)
 {
     if (dirModel->index(string).isValid())
     {
@@ -121,7 +113,7 @@ void FileExplorerModelWidget::dirUpdate(const QString &string)
     }
 }
 
-void FileExplorerModelWidget::dirChange(QModelIndex index)
+void FileSystemWidget::dirChange(QModelIndex index)
 {
     if (!index.isValid() || index.column() !=0)
     {
@@ -132,7 +124,7 @@ void FileExplorerModelWidget::dirChange(QModelIndex index)
 
     ui->groupBoxFileSystem->setTitle(dirModel->filePath(tableView->currentIndex()));
 
-    if (dirModel->filePath(tableView->currentIndex()) == rootDir)
+    if (dirModel->filePath(tableView->currentIndex()) == root)
     {
         dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     }
@@ -150,7 +142,7 @@ void FileExplorerModelWidget::dirChange(QModelIndex index)
     watcher->addPath(dirModel->filePath(tableView->rootIndex()));
 }
 
-void FileExplorerModelWidget::dirUp()
+void FileSystemWidget::dirUp()
 {
     tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
 
@@ -160,12 +152,12 @@ void FileExplorerModelWidget::dirUp()
     }
 }
 
-void FileExplorerModelWidget::tableView_doubleClicked(const QModelIndex &index)
+void FileSystemWidget::tableView_doubleClicked(const QModelIndex &index)
 {
     dirChange(index);
 }
 
-void FileExplorerModelWidget::tableView_clicked(const QModelIndex &index)
+void FileSystemWidget::tableView_clicked(const QModelIndex &index)
 {
     //    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     //    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -174,12 +166,12 @@ void FileExplorerModelWidget::tableView_clicked(const QModelIndex &index)
     //    tableView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select);
 }
 
-void FileExplorerModelWidget::on_buttonRoot_clicked()
+void FileSystemWidget::on_buttonRoot_clicked()
 {
     updateRootDir();
 }
 
-void FileExplorerModelWidget::enter_pressed()
+void FileSystemWidget::enter_pressed()
 {
     dirChange(tableView->currentIndex());
 }

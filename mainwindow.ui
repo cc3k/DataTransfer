@@ -61,7 +61,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="buttonRefreshLeft">
           <property name="maximumSize">
            <size>
             <width>25</width>
@@ -145,7 +145,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="buttonRefreshRight">
           <property name="maximumSize">
            <size>
             <width>25</width>

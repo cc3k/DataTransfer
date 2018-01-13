@@ -14,16 +14,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    fileexplorermodelwidget.cpp \
     customtableview.cpp \
     customdirmodel.cpp \
-    filesystemmountpoint.cpp
+    filesystemmountpoint.cpp \
+    fileitem.cpp \
+    filesystemwidget.cpp
 
 HEADERS  += mainwindow.h \
-    fileexplorermodelwidget.h \
     customtableview.h \
     customdirmodel.h \
-    filesystemmountpoint.h
+    filesystemmountpoint.h \
+    fileitem.h \
+    filesystemwidget.h
 
 FORMS    += mainwindow.ui \
-    fileexplorermodelwidget.ui
+    filesystemwidget.ui

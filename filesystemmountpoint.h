@@ -2,6 +2,7 @@
 #define FILESYSTEMMOUNTPOINT_H
 
 #include <QObject>
+#include "filesystemwidget.h"
 
 class FileSystemMountPoint : QObject
 {
@@ -12,10 +13,6 @@ public:
     ~FileSystemMountPoint() {}
 
     QString getName() const;
-    void setName(const QString &value);
-
-    QString getRoot() const;
-    void setRoot(const QString &value);
 
     bool getIsReadOnly() const;
     void setIsReadOnly(bool value);
@@ -23,12 +20,35 @@ public:
     bool getShowHidden() const;
     void setShowHidden(bool value);
 
+    QString getLocalRoot() const;
+    void setLocalRoot(const QString &value);
+
+    QString getRemoteRoot() const;
+    void setRemoteRoot(const QString &value);
+
+    FileSystemWidget *getFileSystemWidget() const;
+
+    bool setupWidget();
+
+    QString getRsaPath() const;
+    void setRsaPath(const QString &value);
+
+public slots:
+    void refreshWidget();
+    void mount();
+    void umount();
+
 private:
+    bool isMount;
     bool showHidden;
     bool isReadOnly;
     QString name;
-    QString root;
 
+    QString rsaPath;
+    QString localRoot;
+    QString remoteRoot;
+
+    FileSystemWidget *fileSystemWidget;
 };
 
 #endif // FILESYSTEMMOUNTPOINT_H

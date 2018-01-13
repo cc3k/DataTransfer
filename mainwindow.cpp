@@ -42,8 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
     emptyFileExplorerRight->setLayout(vboxR);
     emptyFileExplorerRight->setFlat(true);
 
-    modelLeft = new FileExplorerModelWidget;
-    modelRight = new FileExplorerModelWidget;
+    modelLeft = new FileSystemWidget("/home");
+    modelRight = new FileSystemWidget("/home/projekt");
 
 
 
@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     modelRight->setFocus();
 
-    fileSystemList.append("Пустая ФС");             //0
+    fileSystemList.append("Домашняя папка");        //0
     fileSystemList.append("Локальная ФС");          //1
 
     ui->comboBoxExplorerLeft->addItems(fileSystemList);

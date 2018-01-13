@@ -1,33 +1,26 @@
-#ifndef FILEEXPLORERMODELWIDGET_H
-#define FILEEXPLORERMODELWIDGET_H
+#ifndef FILESYSTEMWIDGET_H
+#define FILESYSTEMWIDGET_H
 
 #include <QWidget>
 #include <QtCore>
 #include <QtGui>
 #include <QDirModel>
 #include <QFileSystemWatcher>
+#include <QDebug>
 
 #include "customtableview.h"
 
-#include <QTableView>
-
-#include <QDebug>
-
-
 namespace Ui {
-class FileExplorerModelWidget;
+class FileSystemWidget;
 }
 
-class FileExplorerModelWidget : public QWidget
+class FileSystemWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FileExplorerModelWidget(QWidget *parent = 0);
-    ~FileExplorerModelWidget();
-
-    void setRoot(QString rootDir);
-    const QString getRootDir();
+    explicit FileSystemWidget(QString root, bool isReadOnly = true, QWidget *parent = 0);
+    ~FileSystemWidget();
 
 public slots:
     void setFocus();
@@ -43,14 +36,14 @@ private slots:
     void dirUp();
 
 private:
-    Ui::FileExplorerModelWidget *ui;
+    Ui::FileSystemWidget *ui;
 
     QDirModel *dirModel;
     QFileSystemWatcher *watcher;
     QModelIndex index;
     CustomTableView *tableView;
 
-    QString rootDir;
+    QString root;
     QString header;
     bool isReadOnly;
 
@@ -61,6 +54,9 @@ private:
 
     void updateRootDir();
     void updateDirMode();
+
+signals:
+    void error();
 };
 
-#endif // FILEEXPLORERMODELWIDGET_H
+#endif // FILESYSTEMWIDGET_H
