@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     fileexplorermodelwidget.cpp \
     customtableview.cpp \
-    customdirmodel.cpp
+    customdirmodel.cpp \
+    filesystemmountpoint.cpp
 
 HEADERS  += mainwindow.h \
     fileexplorermodelwidget.h \
     customtableview.h \
-    customdirmodel.h
+    customdirmodel.h \
+    filesystemmountpoint.h
 
 FORMS    += mainwindow.ui \
     fileexplorermodelwidget.ui

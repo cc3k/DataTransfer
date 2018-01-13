@@ -27,6 +27,7 @@ public:
     ~FileExplorerModelWidget();
 
     void setRoot(QString rootDir);
+    const QString getRootDir();
 
 public slots:
     void setFocus();

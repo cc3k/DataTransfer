@@ -30,7 +30,8 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Insert:
     {
         selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Toggle);
-        selectRow(currentIndex().row() +1);
+        selectRow(currentIndex().row() + 1);
+
         break;
     }
     default:

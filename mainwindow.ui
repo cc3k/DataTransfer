@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1131</width>
-    <height>129</height>
+    <width>1215</width>
+    <height>137</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,14 +43,33 @@
         </item>
         <item>
          <widget class="QComboBox" name="comboBoxExplorerLeft">
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>250</width>
-            <height>20</height>
+            <height>25</height>
            </size>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -108,14 +127,33 @@
         </item>
         <item>
          <widget class="QComboBox" name="comboBoxExplorerRight">
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>250</width>
-            <height>20</height>
+            <height>25</height>
            </size>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -222,7 +260,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1131</width>
+     <width>1215</width>
      <height>28</height>
     </rect>
    </property>

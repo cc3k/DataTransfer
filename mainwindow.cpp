@@ -10,30 +10,53 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle("ЮСИЯ.ХХХХХ-01 ФПО ВКС");
     setWindowState(Qt::WindowMaximized);
 
-    emptyFileExplorer = new QGroupBox;
-    QVBoxLayout *vbox = new QVBoxLayout;
-    QLabel *label = new QLabel;
-    QFont font;
+    emptyFileExplorerLeft = new QGroupBox;
+    QVBoxLayout *vboxL = new QVBoxLayout;
+    QLabel *labelL = new QLabel;
+    QFont fontL;
 
-    font.setPointSize(72);
-    font.setBold(true);
-    label->setFont(font);
-    label->setText("ПУСТАЯ ФС");
-    label->setAlignment(Qt::AlignCenter);
-    label->setDisabled(true);
-    vbox->addWidget(label);
-    emptyFileExplorer->setTitle("Корень ФС");
-    emptyFileExplorer->setLayout(vbox);
-    emptyFileExplorer->setFlat(true);
+    fontL.setPointSize(72);
+    fontL.setBold(true);
+    labelL->setFont(fontL);
+    labelL->setText("ПУСТАЯ ФС");
+    labelL->setAlignment(Qt::AlignCenter);
+    labelL->setDisabled(true);
+    vboxL->addWidget(labelL);
+    emptyFileExplorerLeft->setTitle("Корень ФС");
+    emptyFileExplorerLeft->setLayout(vboxL);
+    emptyFileExplorerLeft->setFlat(true);
+
+    emptyFileExplorerRight = new QGroupBox;
+    QVBoxLayout *vboxR = new QVBoxLayout;
+    QLabel *labelR = new QLabel;
+    QFont fontR;
+
+    fontR.setPointSize(72);
+    fontR.setBold(true);
+    labelR->setFont(fontR);
+    labelR->setText("ПУСТАЯ ФС");
+    labelR->setAlignment(Qt::AlignCenter);
+    labelR->setDisabled(true);
+    vboxR->addWidget(labelR);
+    emptyFileExplorerRight->setTitle("Корень ФС");
+    emptyFileExplorerRight->setLayout(vboxR);
+    emptyFileExplorerRight->setFlat(true);
 
     modelLeft = new FileExplorerModelWidget;
     modelRight = new FileExplorerModelWidget;
 
+
+
     ui->layoutFileExplorer->addWidget(modelLeft,1,0);
     ui->layoutFileExplorer->addWidget(modelRight,1,1);
 
-
     modelRight->setFocus();
+
+    fileSystemList.append("Пустая ФС");             //0
+    fileSystemList.append("Локальная ФС");          //1
+
+    ui->comboBoxExplorerLeft->addItems(fileSystemList);
+    ui->comboBoxExplorerRight->addItems(fileSystemList);
 
     QShortcut *shortcut = new QShortcut(QKeySequence (Qt::Key_F2), this);
     QObject::connect(shortcut, SIGNAL(activated()), ui->buttonQueue, SLOT(click()));

@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QGroupBox>
 #include "fileexplorermodelwidget.h"
+#include "filesystemmountpoint.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,9 +30,11 @@ private:
 
     FileExplorerModelWidget *modelLeft;
     FileExplorerModelWidget *modelRight;
-    QGroupBox *emptyFileExplorer;
+    QGroupBox *emptyFileExplorerLeft;
+    QGroupBox *emptyFileExplorerRight;
 
-    QList<FileExplorerModelWidget*> fileExplorerList;
+    QStringList fileSystemList;
+    QList<FileSystemMountPoint> fileSystemMountPointList;
 };
 
 #endif // MAINWINDOW_H

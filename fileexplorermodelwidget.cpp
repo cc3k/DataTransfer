@@ -7,15 +7,9 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    rootDir = "/home/projekt";
-
     isReadOnly = true;
 
-    dirModel = new QDirModel(this);
-    dirModel->setReadOnly(isReadOnly);
-    dirModel->setResolveSymlinks(false);
-    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+    rootDir = "/mnt";
 
     tableView = new CustomTableView;
     connect(tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableView_doubleClicked(QModelIndex)));
@@ -23,11 +17,17 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
     connect(tableView, SIGNAL(keyEnter()), this, SLOT(enter_pressed()));
     connect(tableView, SIGNAL(keyLeft()), this, SLOT(dirUp()));
 
-
-
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->addWidget(tableView);
     ui->groupBoxFileSystem->setLayout(vbox);
+
+//    QProcess process;
+//    process.startDetached("/bin/sh", QStringList()<< "-c" << "sudo -S");
+
+    dirModel = new QDirModel(this);
+    dirModel->setReadOnly(isReadOnly);
+    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
 
     tableView->setModel(dirModel);
     tableView->verticalHeader()->hide();
@@ -35,13 +35,13 @@ FileExplorerModelWidget::FileExplorerModelWidget(QWidget *parent) :
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width()/2);
     tableView->setSelectionMode(QAbstractItemView::NoSelection);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
+    //tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setAlternatingRowColors(true);
     tableView->setSortingEnabled(true);
     tableView->sortByColumn(0, Qt::AscendingOrder);
     tableView->horizontalHeader()->setHighlightSections(false);
+
 
     watcher = new QFileSystemWatcher;
     watcher->addPath(rootDir);
@@ -63,6 +63,11 @@ void FileExplorerModelWidget::setRoot(QString rootDir)
     updateModel();
 }
 
+const QString FileExplorerModelWidget::getRootDir()
+{
+    return rootDir;
+}
+
 void FileExplorerModelWidget::setFocus()
 {
     tableView->setFocus();
@@ -82,10 +87,10 @@ void FileExplorerModelWidget::updateModel()
 
 void FileExplorerModelWidget::updateRootDir()
 {
-    qDebug() << "updateRootDir()";
+
     index = dirModel->index(rootDir);
     tableView->setRootIndex(index);
-    dirModel->setFilter(QDir::Dirs| QDir::Files | QDir::NoDotAndDotDot);
+    dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
 }
 
@@ -162,7 +167,11 @@ void FileExplorerModelWidget::tableView_doubleClicked(const QModelIndex &index)
 
 void FileExplorerModelWidget::tableView_clicked(const QModelIndex &index)
 {
-    tableView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select);
+    //    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    //    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //    tableView->selectRow(tableView->currentIndex().row());
+    //    tableView->setSelectionMode(QAbstractItemView::NoSelection);
+    //    tableView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select);
 }
 
 void FileExplorerModelWidget::on_buttonRoot_clicked()
