@@ -47,6 +47,13 @@ MainWindow::MainWindow(QWidget *parent) :
     //load config
 
 
+    QFileInfoList drives = QDir::drives();
+
+    foreach(QFileInfo drive, drives)
+    {
+        qDebug() << drive.absoluteFilePath();
+        qDebug() << drive.absolutePath();
+      }
     //
 
     modelLeft = new FileSystemWidget("/home");

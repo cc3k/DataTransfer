@@ -3,6 +3,7 @@
 
 #include <QDirModel>
 #include <QWidget>
+#include <QDebug>
 
 class CustomDirModel : public QDirModel
 {

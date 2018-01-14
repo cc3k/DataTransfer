@@ -5,6 +5,9 @@
 #include <QDebug>
 #include <QShortcut>
 #include <QGroupBox>
+#include <QFileInfoList>
+#include <QDir>
+
 #include "filesystemwidget.h"
 #include "filesystemmountpoint.h"
 

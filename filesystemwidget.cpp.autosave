@@ -141,7 +141,7 @@ void FileSystemWidget::setupWidget()
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width()/2);
-    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setAlternatingRowColors(true);

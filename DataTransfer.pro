@@ -11,21 +11,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DataTransfer
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     customtableview.cpp \
     customdirmodel.cpp \
     filesystemmountpoint.cpp \
     fileitem.cpp \
-    filesystemwidget.cpp
+    filesystemwidget.cpp \
+    filesystemmodel.cpp
 
 HEADERS  += mainwindow.h \
     customtableview.h \
     customdirmodel.h \
     filesystemmountpoint.h \
     fileitem.h \
-    filesystemwidget.h
+    filesystemwidget.h \
+    filesystemmodel.h
 
 FORMS    += mainwindow.ui \
     filesystemwidget.ui

@@ -11,9 +11,11 @@ QVariant CustomDirModel::data(const QModelIndex &index, int role) const
     {
         return Qt::AlignBottom;
     }
-    else
-    {
-        return QDirModel::data(index, role);
-    }
-}
 
+    if (role == Qt::UserRole)
+    {
+        qDebug() << "CustomDirModel::data(const QModelIndex &index, int role) " << "Qt::UserRole";
+    }
+
+    return QDirModel::data(index, role);
+}
