@@ -28,10 +28,10 @@ public:
 
     FileSystemWidget *getFileSystemWidget() const;
 
-    bool setupWidget();
-
     QString getRsaPath() const;
     void setRsaPath(const QString &value);
+
+    bool setupWidget();
 
 public slots:
     void refreshWidget();

@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include "customtableview.h"
+#include "customdirmodel.h"
 
 namespace Ui {
 class FileSystemWidget;
@@ -21,6 +22,8 @@ class FileSystemWidget : public QWidget
 public:
     explicit FileSystemWidget(QString root, bool isReadOnly = true, QWidget *parent = 0);
     ~FileSystemWidget();
+
+   void setupWidget();
 
 public slots:
     void setFocus();
@@ -38,7 +41,7 @@ private slots:
 private:
     Ui::FileSystemWidget *ui;
 
-    QDirModel *dirModel;
+    CustomDirModel *dirModel;
     QFileSystemWatcher *watcher;
     QModelIndex index;
     CustomTableView *tableView;
@@ -49,6 +52,8 @@ private:
 
     int dirCount;
     int fileCount;
+
+
 
     void updateModel();
 

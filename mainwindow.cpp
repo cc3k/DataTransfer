@@ -42,15 +42,23 @@ MainWindow::MainWindow(QWidget *parent) :
     emptyFileExplorerRight->setLayout(vboxR);
     emptyFileExplorerRight->setFlat(true);
 
+
+
+    //load config
+
+
+    //
+
     modelLeft = new FileSystemWidget("/home");
     modelRight = new FileSystemWidget("/home/projekt");
-
-
 
     ui->layoutFileExplorer->addWidget(modelLeft,1,0);
     ui->layoutFileExplorer->addWidget(modelRight,1,1);
 
     modelRight->setFocus();
+
+    modelLeft->setupWidget();
+    modelRight->setupWidget();
 
     fileSystemList.append("Домашняя папка");        //0
     fileSystemList.append("Локальная ФС");          //1

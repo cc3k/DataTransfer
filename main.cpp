@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QTranslator qtLanguageTranslator;
-    qtLanguageTranslator.load(QString("QtLanguage_") + QString("ru_RU"));
-    qApp->installTranslator(&qtLanguageTranslator);
+    QTranslator qtTranslator;
+    qtTranslator.load(QString("qt_") + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qApp->installTranslator(&qtTranslator);
 
     MainWindow w;
     w.show();

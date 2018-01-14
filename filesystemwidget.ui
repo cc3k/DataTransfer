@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FileExplorerModelWidget</class>
- <widget class="QWidget" name="FileExplorerModelWidget">
+ <class>FileSystemWidget</class>
+ <widget class="QWidget" name="FileSystemWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FileExplorertModelWidget</string>
+   <string>FileSystemWidget</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -79,6 +79,11 @@
           <width>50</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <kerning>true</kerning>
+         </font>
         </property>
         <property name="text">
          <string>RO</string>

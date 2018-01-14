@@ -20,39 +20,9 @@ FileSystemWidget::FileSystemWidget(QString root, bool isReadOnly, QWidget *paren
     vbox->addWidget(tableView);
     ui->groupBoxFileSystem->setLayout(vbox);
 
-//    QProcess process;
-//    process.startDetached("/bin/sh", QStringList()<< "-c" << "sudo -S");
+    //    QProcess process;
+    //    process.startDetached("/bin/sh", QStringList()<< "-c" << "sudo -S");
 
-    dirModel = new QDirModel(this);
-    dirModel->setReadOnly(isReadOnly);
-    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-
-    tableView->setModel(dirModel);
-    tableView->verticalHeader()->hide();
-    tableView->setShowGrid(false);
-    tableView->horizontalHeader()->setStretchLastSection(true);
-    tableView->setColumnWidth(0, this->width()/2);
-    tableView->setSelectionMode(QAbstractItemView::NoSelection);
-    //tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    tableView->setAlternatingRowColors(true);
-    tableView->setSortingEnabled(true);
-    tableView->sortByColumn(0, Qt::AscendingOrder);
-    tableView->horizontalHeader()->setHighlightSections(false);
-
-
-    watcher = new QFileSystemWatcher;
-    watcher->addPath(root);
-    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
-
-    updateModel();
-    updateRootDir();
-
-    if (dirModel->filePath(tableView->currentIndex().parent()) != root)
-    {
-        qDebug() << "error open " << root;
-    }
 }
 
 FileSystemWidget::~FileSystemWidget()
@@ -152,9 +122,53 @@ void FileSystemWidget::dirUp()
     }
 }
 
+void FileSystemWidget::setupWidget()
+{
+    dirModel = new CustomDirModel(this);
+    dirModel->setReadOnly(isReadOnly);
+    dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+
+    dirModel->setLazyChildCount(true); //Не проверяет есть ли у директории потомки, для таблицы не важно (хотя если считать размеры...)
+
+    tableView->setModel(dirModel);
+    tableView->verticalHeader()->hide();
+    tableView->setShowGrid(false);
+    tableView->horizontalHeader()->setStretchLastSection(true);
+    tableView->setColumnWidth(0, this->width()/2);
+    tableView->setSelectionMode(QAbstractItemView::NoSelection);
+    //tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    tableView->setAlternatingRowColors(true);
+    tableView->setSortingEnabled(true);
+    tableView->sortByColumn(0, Qt::AscendingOrder);
+    tableView->horizontalHeader()->setHighlightSections(false);
+
+//    можно разом менять шрифт на таблицу
+//    QFont font;
+//    font.setWeight(QFont::Bold);
+//    font.setPointSize(10);
+//    tableView->setFont(font);
+
+    watcher = new QFileSystemWatcher;
+    watcher->addPath(root);
+    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
+
+    updateModel();
+    updateRootDir();
+
+    if (dirModel->filePath(tableView->currentIndex().parent()) != root)
+    {
+        qDebug() << "error open " << root;
+    }
+}
+
 void FileSystemWidget::tableView_doubleClicked(const QModelIndex &index)
 {
-    dirChange(index);
+    if (dirModel->fileInfo(index).isDir())
+    {
+        dirChange(index);
+    }
 }
 
 void FileSystemWidget::tableView_clicked(const QModelIndex &index)
@@ -173,7 +187,10 @@ void FileSystemWidget::on_buttonRoot_clicked()
 
 void FileSystemWidget::enter_pressed()
 {
-    dirChange(tableView->currentIndex());
+    if (dirModel->fileInfo(tableView->currentIndex()).isDir())
+    {
+        dirChange(tableView->currentIndex());
+    }
 }
 
 
