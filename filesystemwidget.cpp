@@ -1,12 +1,13 @@
 #include "filesystemwidget.h"
 #include "ui_filesystemwidget.h"
 
-FileSystemWidget::FileSystemWidget(QString root, bool isReadOnly, QWidget *parent) :
+FileSystemWidget::FileSystemWidget(QString name, QString root, bool isReadOnly, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FileSystemWidget)
 {
     ui->setupUi(this);
 
+    this->name = name;
     this->root = root;
     this->isReadOnly = isReadOnly;
 
@@ -51,11 +52,30 @@ void FileSystemWidget::updateModel()
 
 void FileSystemWidget::updateRootDir()
 {
+    if (!dirModel->fileInfo(dirModel->index(root)).isReadable())
+    {
+        QString path = dirModel->fileName(dirModel->index(root));
+        QMessageBox mBox(QMessageBox::Warning
+                         ,"Ошибка!"
+                         , "Отказано в установке корня для " + name + "://" + path
+                         + "\nРесурс: " + path + " Отказано в доступе."
+                         + "\nПринудительный сброс корня на домашний каталог"
+                         , QMessageBox::Yes);
+        mBox.setModal(true);
+        mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
+        root = QDir::homePath();
+        mBox.exec();
+    }
 
     index = dirModel->index(root);
+
     tableView->setRootIndex(index);
+
     dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-    tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
+
+    //tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
+    tableView->selectRow(0);
+    ui->groupBoxFileSystem->setTitle(root);
 }
 
 void FileSystemWidget::updateDirMode()
@@ -95,10 +115,10 @@ void FileSystemWidget::dirChange(QModelIndex index)
     if (!dirModel->fileInfo(tableView->currentIndex()).isReadable())
     {
         QString path = dirModel->fileName(tableView->currentIndex());
-        QMessageBox mBox(QMessageBox::Critical
-                                            ,"Ошибка!"
-                                            , "Ресурс: " + path + " Отказано в доступе."
-                                            , QMessageBox::Yes);
+        QMessageBox mBox(QMessageBox::Warning
+                         ,"Ошибка!"
+                         , "Ресурс: " + path + " Отказано в доступе."
+                         , QMessageBox::Yes);
         mBox.setModal(true);
         mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
         mBox.exec();
@@ -136,7 +156,8 @@ void FileSystemWidget::dirChange(QModelIndex index)
 
 void FileSystemWidget::dirUp()
 {
-    tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
+    //tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
+    tableView->selectRow(0);
 
     if (dirModel->fileName(tableView->currentIndex()) == "..")
     {
@@ -174,7 +195,6 @@ void FileSystemWidget::setupWidget()
     //    tableView->setFont(font);
 
     watcher = new QFileSystemWatcher;
-    watcher->addPath(root);
     connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
 
     updateModel();

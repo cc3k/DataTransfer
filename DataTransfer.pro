@@ -26,3 +26,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     filesystemwidget.ui
+
+RESOURCES += \
+    resources.qrc

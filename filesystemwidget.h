@@ -21,7 +21,7 @@ class FileSystemWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit FileSystemWidget(QString root, bool isReadOnly = true, QWidget *parent = 0);
+    explicit FileSystemWidget(QString name, QString root, bool isReadOnly = true, QWidget *parent = 0);
     ~FileSystemWidget();
 
    void setupWidget();
@@ -54,7 +54,7 @@ private:
     int dirCount;
     int fileCount;
 
-
+    QString name;
 
     void updateModel();
 

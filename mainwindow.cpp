@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle("ЮСИЯ.ХХХХХ-01 ФПО ВКС");
     setWindowState(Qt::WindowMaximized);
-
     setWindowModality(Qt::ApplicationModal); //чтобы не переходил фокус при поп-апах
+    setWindowIcon(QIcon(":/images/transfer.png"));
 
 //    emptyFileExplorerLeft = new QGroupBox;
 //    QVBoxLayout *vboxL = new QVBoxLayout;
@@ -48,13 +48,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //load config
 
-    qDebug() << QFileInfo("/home/projekt/Workspace").canonicalPath();
-    qDebug() << QDir::homePath();
+    //qDebug() << QFileInfo("/home/projekt/Workspace").canonicalPath();
+    //qDebug() << QDir::homePath();
 
     //
 
-    modelLeft = new FileSystemWidget("/home");
-    modelRight = new FileSystemWidget("/home/projekt");
+
+
+    modelLeft = new FileSystemWidget("ФС1", "/home");
+    modelRight = new FileSystemWidget("ФС2","/home/projekt");
 
     ui->layoutFileExplorer->addWidget(modelLeft,1,0);
     ui->layoutFileExplorer->addWidget(modelRight,1,1);
