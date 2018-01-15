@@ -33,8 +33,6 @@ private:
 
     FileSystemWidget *modelLeft;
     FileSystemWidget *modelRight;
-    QGroupBox *emptyFileExplorerLeft;
-    QGroupBox *emptyFileExplorerRight;
 
     QStringList fileSystemList;
     QList<FileSystemMountPoint> fileSystemMountPointList;

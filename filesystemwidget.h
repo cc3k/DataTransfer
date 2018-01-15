@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QDirModel>
 #include <QFileSystemWatcher>
+#include <QMessageBox>
 #include <QDebug>
 
 #include "customtableview.h"

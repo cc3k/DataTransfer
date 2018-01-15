@@ -10,50 +10,47 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle("ЮСИЯ.ХХХХХ-01 ФПО ВКС");
     setWindowState(Qt::WindowMaximized);
 
-    emptyFileExplorerLeft = new QGroupBox;
-    QVBoxLayout *vboxL = new QVBoxLayout;
-    QLabel *labelL = new QLabel;
-    QFont fontL;
+    setWindowModality(Qt::ApplicationModal); //чтобы не переходил фокус при поп-апах
 
-    fontL.setPointSize(72);
-    fontL.setBold(true);
-    labelL->setFont(fontL);
-    labelL->setText("ПУСТАЯ ФС");
-    labelL->setAlignment(Qt::AlignCenter);
-    labelL->setDisabled(true);
-    vboxL->addWidget(labelL);
-    emptyFileExplorerLeft->setTitle("Корень ФС");
-    emptyFileExplorerLeft->setLayout(vboxL);
-    emptyFileExplorerLeft->setFlat(true);
+//    emptyFileExplorerLeft = new QGroupBox;
+//    QVBoxLayout *vboxL = new QVBoxLayout;
+//    QLabel *labelL = new QLabel;
+//    QFont fontL;
 
-    emptyFileExplorerRight = new QGroupBox;
-    QVBoxLayout *vboxR = new QVBoxLayout;
-    QLabel *labelR = new QLabel;
-    QFont fontR;
+//    fontL.setPointSize(72);
+//    fontL.setBold(true);
+//    labelL->setFont(fontL);
+//    labelL->setText("ПУСТАЯ ФС");
+//    labelL->setAlignment(Qt::AlignCenter);
+//    labelL->setDisabled(true);
+//    vboxL->addWidget(labelL);
+//    emptyFileExplorerLeft->setTitle("Корень ФС");
+//    emptyFileExplorerLeft->setLayout(vboxL);
+//    emptyFileExplorerLeft->setFlat(true);
 
-    fontR.setPointSize(72);
-    fontR.setBold(true);
-    labelR->setFont(fontR);
-    labelR->setText("ПУСТАЯ ФС");
-    labelR->setAlignment(Qt::AlignCenter);
-    labelR->setDisabled(true);
-    vboxR->addWidget(labelR);
-    emptyFileExplorerRight->setTitle("Корень ФС");
-    emptyFileExplorerRight->setLayout(vboxR);
-    emptyFileExplorerRight->setFlat(true);
+//    emptyFileExplorerRight = new QGroupBox;
+//    QVBoxLayout *vboxR = new QVBoxLayout;
+//    QLabel *labelR = new QLabel;
+//    QFont fontR;
+
+//    fontR.setPointSize(72);
+//    fontR.setBold(true);
+//    labelR->setFont(fontR);
+//    labelR->setText("ПУСТАЯ ФС");
+//    labelR->setAlignment(Qt::AlignCenter);
+//    labelR->setDisabled(true);
+//    vboxR->addWidget(labelR);
+//    emptyFileExplorerRight->setTitle("Корень ФС");
+//    emptyFileExplorerRight->setLayout(vboxR);
+//    emptyFileExplorerRight->setFlat(true);
 
 
 
     //load config
 
+    qDebug() << QFileInfo("/home/projekt/Workspace").canonicalPath();
+    qDebug() << QDir::homePath();
 
-    QFileInfoList drives = QDir::drives();
-
-    foreach(QFileInfo drive, drives)
-    {
-        qDebug() << drive.absoluteFilePath();
-        qDebug() << drive.absolutePath();
-      }
     //
 
     modelLeft = new FileSystemWidget("/home");

@@ -17,6 +17,8 @@ FileSystemWidget::FileSystemWidget(QString root, bool isReadOnly, QWidget *paren
     connect(tableView, SIGNAL(keyLeft()), this, SLOT(dirUp()));
 
     QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->setContentsMargins(0,12,0,0);
+    ui->groupBoxFileSystem->setContentsMargins(0,0,0,0);
     vbox->addWidget(tableView);
     ui->groupBoxFileSystem->setLayout(vbox);
 
@@ -85,8 +87,21 @@ void FileSystemWidget::dirUpdate(const QString &string)
 
 void FileSystemWidget::dirChange(QModelIndex index)
 {
-    if (!index.isValid() || index.column() !=0)
+    if (!index.isValid() || index.column() != 0 )
     {
+        return;
+    }
+
+    if (!dirModel->fileInfo(tableView->currentIndex()).isReadable())
+    {
+        QString path = dirModel->fileName(tableView->currentIndex());
+        QMessageBox mBox(QMessageBox::Critical
+                                            ,"Ошибка!"
+                                            , "Ресурс: " + path + " Отказано в доступе."
+                                            , QMessageBox::Yes);
+        mBox.setModal(true);
+        mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
+        mBox.exec();
         return;
     }
 
@@ -104,6 +119,9 @@ void FileSystemWidget::dirChange(QModelIndex index)
     }
 
     watcher->removePath(dirModel->filePath(tableView->rootIndex()));
+
+    //qDebug() << dirModel->filePath(tableView->currentIndex());
+    //qDebug() << "is accessable" << dirModel->fileInfo(tableView->currentIndex()).isReadable();
 
     tableView->setRootIndex(tableView->currentIndex());
 
@@ -141,7 +159,7 @@ void FileSystemWidget::setupWidget()
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width()/2);
-    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setAlternatingRowColors(true);
@@ -149,11 +167,11 @@ void FileSystemWidget::setupWidget()
     tableView->sortByColumn(0, Qt::AscendingOrder);
     tableView->horizontalHeader()->setHighlightSections(false);
 
-//    можно разом менять шрифт на таблицу
-//    QFont font;
-//    font.setWeight(QFont::Bold);
-//    font.setPointSize(10);
-//    tableView->setFont(font);
+    //    можно разом менять шрифт на таблицу
+    //    QFont font;
+    //    font.setWeight(QFont::Bold);
+    //    font.setPointSize(10);
+    //    tableView->setFont(font);
 
     watcher = new QFileSystemWatcher;
     watcher->addPath(root);
