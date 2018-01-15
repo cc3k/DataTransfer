@@ -15,22 +15,29 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
         emit keyTab();
         break;
     }
+
     case Qt::Key_Right:
     case Qt::Key_Return:
     {
         emit keyEnter();
         break;
     }
+
     case Qt::Key_Left:
     {
         emit keyLeft();
         break;
     }
+
     case Qt::Key_Space:
     case Qt::Key_Insert:
     {
         //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Toggle);
-        selectRow(currentIndex().row() + 1);
+        //selectRow(currentIndex().row() + 1);
+
+        //selectRow(currentIndex().row());
+        //selectRow(currentIndex().row() + 1);
+        //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Deselect);
 
         break;
     }

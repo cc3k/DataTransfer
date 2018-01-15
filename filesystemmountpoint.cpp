@@ -4,8 +4,6 @@ FileSystemMountPoint::FileSystemMountPoint(QObject *parent, QString name) : QObj
 {
     isReadOnly = true;
     showHidden = false;
-    localRoot = "~";
-    remoteRoot = "~";
 
     this->name = name;
 }

@@ -55,12 +55,13 @@ void FileSystemWidget::updateRootDir()
     if (!dirModel->fileInfo(dirModel->index(root)).isReadable())
     {
         QString path = dirModel->fileName(dirModel->index(root));
-        QMessageBox mBox(QMessageBox::Warning
+        QMessageBox mBox(QMessageBox::NoIcon
                          ,"Ошибка!"
                          , "Отказано в установке корня для " + name + "://" + path
                          + "\nРесурс: " + path + " Отказано в доступе."
                          + "\nПринудительный сброс корня на домашний каталог"
                          , QMessageBox::Yes);
+        mBox.setWindowIcon(QIcon(":/images/dialog-warning.png"));
         mBox.setModal(true);
         mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
         root = QDir::homePath();
@@ -115,10 +116,11 @@ void FileSystemWidget::dirChange(QModelIndex index)
     if (!dirModel->fileInfo(tableView->currentIndex()).isReadable())
     {
         QString path = dirModel->fileName(tableView->currentIndex());
-        QMessageBox mBox(QMessageBox::Warning
+        QMessageBox mBox(QMessageBox::NoIcon
                          ,"Ошибка!"
                          , "Ресурс: " + path + " Отказано в доступе."
                          , QMessageBox::Yes);
+        mBox.setWindowIcon(QIcon(":/images/dialog-warning.png"));
         mBox.setModal(true);
         mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
         mBox.exec();
@@ -180,7 +182,7 @@ void FileSystemWidget::setupWidget()
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width()/2);
-    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setAlternatingRowColors(true);
@@ -216,11 +218,10 @@ void FileSystemWidget::tableView_doubleClicked(const QModelIndex &index)
 
 void FileSystemWidget::tableView_clicked(const QModelIndex &index)
 {
-    //    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    //    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    //    tableView->selectRow(tableView->currentIndex().row());
-    //    tableView->setSelectionMode(QAbstractItemView::NoSelection);
-    //    tableView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select);
+    if (index.isValid())
+    {
+        tableView->selectRow(index.row());
+    }
 }
 
 void FileSystemWidget::on_buttonRoot_clicked()
@@ -235,5 +236,3 @@ void FileSystemWidget::enter_pressed()
         dirChange(tableView->currentIndex());
     }
 }
-
-
