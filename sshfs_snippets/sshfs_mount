@@ -1,1 +1,1 @@
-sshfs projekt@192.168.56.101:/home/projekt /mnt/local -C -o uid=1000,ssh_command='ssh -i /home/projekt/.ssh/id_rsa',workaround=rename
+sshfs cc3k@192.168.56.102:/home/cc3k /mount.storage/cc3k_192.168.56.102 -o compression=yes,identityFile=/home/projekt/.ssh/id_rsa

@@ -9,7 +9,8 @@
 #include <QDir>
 
 #include "filesystemwidget.h"
-#include "filesystemmountpoint.h"
+#include "filesystementry.h"
+#include "configxmlreader.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,8 @@ private slots:
     void on_comboBoxExplorerLeft_currentIndexChanged(int index);
     void on_comboBoxExplorerRight_currentIndexChanged(int index);
 
+    void on_buttonSession_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -35,7 +38,13 @@ private:
     FileSystemWidget *modelRight;
 
     QStringList fileSystemList;
-    QList<FileSystemMountPoint> fileSystemMountPointList;
+    QList<FileSystemEntry *> fileSystemEntryList;
+
+    QString sessionId;
+
+    QString getRandomString(const int length) const;
+    QString generateSessionId() const;
+    ConfigXmlReader *configXmlReader;
 };
 
 #endif // MAINWINDOW_H

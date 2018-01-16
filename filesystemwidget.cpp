@@ -10,6 +10,7 @@ FileSystemWidget::FileSystemWidget(QString name, QString root, bool isReadOnly, 
     this->name = name;
     this->root = root;
     this->isReadOnly = isReadOnly;
+    parentRow = 0;
 
     tableView = new CustomTableView;
     connect(tableView,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableView_doubleClicked(QModelIndex)));
@@ -127,7 +128,14 @@ void FileSystemWidget::dirChange(QModelIndex index)
         return;
     }
 
-    tableView->clearSelection();
+    //Когда выходишь на уровень вверх не ставить курсор на верхний элемент, а на
+    //тот с которого входили в директорию (на предка)
+    parentIndex = tableView->currentIndex();
+    parentRow = tableView->currentIndex().parent().row();
+
+    //это задумка пока не работает
+
+    //tableView->clearSelection(); //беp него тоже неплохо
 
     ui->groupBoxFileSystem->setTitle(dirModel->filePath(tableView->currentIndex()));
 
@@ -151,15 +159,25 @@ void FileSystemWidget::dirChange(QModelIndex index)
     //tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
 
     //это выбор ряда
+    if (tableView->rootIndex() == parentIndex)
+    {
+        tableView->selectRow(parentRow);
+    }
+    else
+    {
     tableView->selectRow(0);
+    }
 
     watcher->addPath(dirModel->filePath(tableView->rootIndex()));
 }
 
 void FileSystemWidget::dirUp()
 {
+    qDebug() << tableView->rootIndex().parent().data(Qt::DisplayRole);
+
     //tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
     tableView->selectRow(0);
+
 
     if (dirModel->fileName(tableView->currentIndex()) == "..")
     {
@@ -172,7 +190,13 @@ void FileSystemWidget::setupWidget()
     dirModel = new CustomDirModel(this);
     dirModel->setReadOnly(isReadOnly);
     dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    dirModel->setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+    dirModel->setFilter(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot);
+
+    //for testing
+    model_ = new QFileSystemModel;
+    model_->setReadOnly(isReadOnly);
+    model_->setRootPath("/home/projekt");
+    model_->setFilter(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot);
 
     dirModel->setLazyChildCount(true); //Не проверяет есть ли у директории потомки, для таблицы не важно (хотя если считать размеры...)
 
@@ -199,6 +223,7 @@ void FileSystemWidget::setupWidget()
     watcher = new QFileSystemWatcher;
     connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirUpdate(QString)));
 
+    //tableView->setRootIndex(model_->index(root));
     updateModel();
     updateRootDir();
 
@@ -212,8 +237,10 @@ void FileSystemWidget::tableView_doubleClicked(const QModelIndex &index)
 {
     if (dirModel->fileInfo(index).isDir())
     {
+        tableView->selectRow(tableView->currentIndex().row());
         dirChange(index);
     }
+
 }
 
 void FileSystemWidget::tableView_clicked(const QModelIndex &index)
@@ -235,4 +262,14 @@ void FileSystemWidget::enter_pressed()
     {
         dirChange(tableView->currentIndex());
     }
+}
+
+void FileSystemWidget::setFileSystemRW(bool mode)
+{
+
+}
+
+void FileSystemWidget::setShowHidden(bool mode)
+{
+
 }

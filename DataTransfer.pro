@@ -15,14 +15,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     customtableview.cpp \
     customdirmodel.cpp \
-    filesystemmountpoint.cpp \
     filesystemwidget.cpp \
+    configxmlreader.cpp \
+    filesystementry.cpp
 
 HEADERS  += mainwindow.h \
     customtableview.h \
     customdirmodel.h \
-    filesystemmountpoint.h \
     filesystemwidget.h \
+    configxmlreader.h \
+    filesystementry.h
 
 FORMS    += mainwindow.ui \
     filesystemwidget.ui

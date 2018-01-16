@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QDirModel>
+#include <QFileSystemModel>
 #include <QFileSystemWatcher>
 #include <QMessageBox>
 #include <QDebug>
@@ -28,6 +29,8 @@ public:
 
 public slots:
     void setFocus();
+    void setFileSystemRW(bool mode);
+    void setShowHidden(bool mode);
 
 private slots:
     void on_buttonDirMode_clicked();
@@ -42,10 +45,13 @@ private slots:
 private:
     Ui::FileSystemWidget *ui;
 
+    QFileSystemModel *model_;
     CustomDirModel *dirModel;
     QFileSystemWatcher *watcher;
     QModelIndex index;
     CustomTableView *tableView;
+    int parentRow;
+    QModelIndex parentIndex;
 
     QString root;
     QString header;

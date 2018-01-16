@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conf>
-<station name="loopback" host="127.0.0.1" user"ping" remotepath="/home" mountpoint="" identityfile="" options="">
-</station>
-</conf>
+<stations>
+<entry name="Домашний каталог" type="1" local="/home"/>
+<entry name="Станция_1" type="2" host="192.168.56.101" user="projekt" remote=":/home/projekt" local="/mount.storage/projekt_192.168.56.101" id_rsa="/home/projekt/.ssh/id_rsa" options="compression=yes" mode="mount_ro,show_hid"/>
+<entry name="Станция_2" type="2" host="192.168.56.102" user="projekt" remote=":/home/projekt" local="/mount.storage/projekt_192.168.56.102" id_rsa="/home/projekt/.ssh/id_rsa" options="" mode="mount_rw"/>
+<entry name="Станция_3" type="2" host="192.168.56.102" user="cc3k" remote=":/home/cc3k" local="/mount.storage/cc3k_192.168.56.102" id_rsa="/home/projekt/.ssh/id_rsa" options="allow_other" mode="mount_rw"/>
+</stations>

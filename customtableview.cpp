@@ -29,9 +29,9 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
         break;
     }
 
-    case Qt::Key_Space:
-    case Qt::Key_Insert:
-    {
+//    case Qt::Key_Space:
+//    case Qt::Key_Insert:
+//    {
         //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Toggle);
         //selectRow(currentIndex().row() + 1);
 
@@ -39,8 +39,8 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
         //selectRow(currentIndex().row() + 1);
         //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Deselect);
 
-        break;
-    }
+//        break;
+//    }
     default:
         QTableView::keyPressEvent(event);
         break;
