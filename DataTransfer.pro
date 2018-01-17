@@ -17,17 +17,24 @@ SOURCES += main.cpp\
     customdirmodel.cpp \
     filesystemwidget.cpp \
     configxmlreader.cpp \
-    filesystementry.cpp
+    filesystementry.cpp \
+    copyfile.cpp \
+    pathparse.cpp \
+    fileparsepathdialog.cpp
 
 HEADERS  += mainwindow.h \
     customtableview.h \
     customdirmodel.h \
     filesystemwidget.h \
     configxmlreader.h \
-    filesystementry.h
+    filesystementry.h \
+    copyfile.h \
+    pathparse.h \
+    fileparsepathdialog.h
 
 FORMS    += mainwindow.ui \
-    filesystemwidget.ui
+    filesystemwidget.ui \
+    fileparsepathdialog.ui
 
 RESOURCES += \
     resources.qrc

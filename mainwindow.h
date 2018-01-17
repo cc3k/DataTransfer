@@ -7,10 +7,19 @@
 #include <QGroupBox>
 #include <QFileInfoList>
 #include <QDir>
+#include <QDirIterator>
+
+#include "fstream"
+#include "stdio.h"
 
 #include "filesystemwidget.h"
 #include "filesystementry.h"
 #include "configxmlreader.h"
+
+#include "copyfile.h"
+#include "pathparse.h"
+#include "fileparsepathdialog.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +39,10 @@ private slots:
     void on_comboBoxExplorerRight_currentIndexChanged(int index);
 
     void on_buttonSession_clicked();
+
+    void getData(QStringList data);
+
+    void tst();
 
 private:
     Ui::MainWindow *ui;

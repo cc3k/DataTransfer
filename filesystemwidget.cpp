@@ -130,8 +130,8 @@ void FileSystemWidget::dirChange(QModelIndex index)
 
     //Когда выходишь на уровень вверх не ставить курсор на верхний элемент, а на
     //тот с которого входили в директорию (на предка)
-    parentIndex = tableView->currentIndex();
-    parentRow = tableView->currentIndex().parent().row();
+    //parentIndex = tableView->currentIndex();
+    //parentRow = tableView->currentIndex().parent().row();
 
     //это задумка пока не работает
 
@@ -159,14 +159,7 @@ void FileSystemWidget::dirChange(QModelIndex index)
     //tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
 
     //это выбор ряда
-    if (tableView->rootIndex() == parentIndex)
-    {
-        tableView->selectRow(parentRow);
-    }
-    else
-    {
     tableView->selectRow(0);
-    }
 
     watcher->addPath(dirModel->filePath(tableView->rootIndex()));
 }

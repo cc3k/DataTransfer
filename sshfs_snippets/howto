@@ -15,3 +15,14 @@ ssh -i /home/projekt/.ssh/id_rsa cc3k@192.168.56.102
 свой приватный ключ на удаленный хост, без пароля для логина удаленного хоста
 
 fuse2fs для монтирования exfat
+
+в .ssh/ssh_config
+ServerAliveInterval 5
+ServerAliveCountMax 3
+
+в /etc/ssh/sshd_config
+TcpKeepAlive
+ClientAliveInterval 5
+ClientAliveCountMax 3
+
+Это для разрыва через 5х3 секунд, иначе ждать 10 минут

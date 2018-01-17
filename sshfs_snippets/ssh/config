@@ -1,0 +1,6 @@
+#user config for ssh
+Host mount102
+    HostName 192.168.56.102
+    User cc3k
+    ServerAliveInterval 5
+    ServerAliveCountMax 3

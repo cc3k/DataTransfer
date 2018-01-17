@@ -29,12 +29,12 @@ QList<FileSystemEntry *> ConfigXmlReader::getFileSystemEntryList()
         {
             if (reader->name() == "stations")
             {
-                qDebug() << "Чтение конфигурации <stations> node";
+//                qDebug() << "Чтение конфигурации <stations> node";
             }
 
             if (reader->name() == "entry")
             {
-                qDebug() << "Чтение конфигурации <entry> node";
+  //              qDebug() << "Чтение конфигурации <entry> node";
 
                 FileSystemEntry *fileSystemEntry = new FileSystemEntry(reader->attributes().value("name").toString());
 
