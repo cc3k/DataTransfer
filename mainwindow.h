@@ -7,10 +7,6 @@
 #include <QGroupBox>
 #include <QFileInfoList>
 #include <QDir>
-#include <QDirIterator>
-
-#include "fstream"
-#include "stdio.h"
 
 #include "filesystemwidget.h"
 #include "filesystementry.h"
@@ -34,30 +30,35 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_buttonQueue_clicked();
-    void on_comboBoxExplorerLeft_currentIndexChanged(int index);
-    void on_comboBoxExplorerRight_currentIndexChanged(int index);
+    void on_comboBoxExplorer1_currentIndexChanged(int index);
+    void on_comboBoxExplorer2_currentIndexChanged(int index);
 
+    void on_buttonQueue_clicked();
+    void on_buttonCopy_clicked();
+    void on_buttonMove_clicked();
+    void on_buttonCatalogue_clicked();
+    void on_buttonDelete_clicked();
+    void on_buttonQuit_clicked();
     void on_buttonSession_clicked();
 
+    //фуфло, отсюда убрать
     void getData(QStringList data);
-
     void tst();
 
 private:
     Ui::MainWindow *ui;
 
-    FileSystemWidget *modelLeft;
-    FileSystemWidget *modelRight;
+    FileSystemWidget *model1;
+    FileSystemWidget *model2;
 
-    QStringList fileSystemList;
     QList<FileSystemEntry *> fileSystemEntryList;
 
     QString sessionId;
 
     QString getRandomString(const int length) const;
     QString generateSessionId() const;
-    ConfigXmlReader *configXmlReader;
+
+    QThread *fileThread;
 };
 
 #endif // MAINWINDOW_H

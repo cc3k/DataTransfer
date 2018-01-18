@@ -5,7 +5,6 @@
 #include <QtCore>
 #include <QtGui>
 #include <QDirModel>
-#include <QFileSystemModel>
 #include <QFileSystemWatcher>
 #include <QMessageBox>
 #include <QDebug>
@@ -46,7 +45,6 @@ private slots:
 private:
     Ui::FileSystemWidget *ui;
 
-    QFileSystemModel *model_;
     CustomDirModel *dirModel;
     QFileSystemWatcher *watcher;
     QModelIndex index;

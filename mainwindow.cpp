@@ -14,34 +14,39 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowModality(Qt::ApplicationModal); //чтобы не переходил фокус при поп-апах
     setWindowIcon(QIcon(":/images/transfer.png"));
 
+
+    fileThread = new QThread(this);
+    fileThread->start();
+
     //load config
-    configXmlReader = new ConfigXmlReader(":/config_tst/stations.xml");
+    ConfigXmlReader *configXmlReader = new ConfigXmlReader(":/config_tst/stations.xml");
     fileSystemEntryList = configXmlReader->getFileSystemEntryList();
+    configXmlReader->deleteLater();
 
-    //qDebug() << QFileInfo("/home/projekt/Workspace").canonicalPath();
-    //qDebug() << QDir::homePath();
-
-    modelLeft = new FileSystemWidget("ФС1", "/mount.storage/cc3k_192.168.56.102");
-    modelRight = new FileSystemWidget("ФС2","/usr");
+    model1 = new FileSystemWidget("ФС1", "/home/projekt");
+    model2 = new FileSystemWidget("ФС2", "/home/projekt");
 
     //rsa ключи забрать к себе
 
-    ui->layoutFileExplorer->addWidget(modelLeft,1,0);
-    ui->layoutFileExplorer->addWidget(modelRight,1,1);
+    ui->layoutFileExplorer->addWidget(model1,1,0);
+    ui->layoutFileExplorer->addWidget(model2,1,1);
 
-    modelRight->setFocus();
+    model2->setFocus();
 
-    modelLeft->setupWidget();
-    modelRight->setupWidget();
+    model1->setupWidget();
+    model2->setupWidget();
 
-    fileSystemList.append("Домашняя папка");        //0
-    fileSystemList.append("Локальная ФС");          //1
-
-    ui->comboBoxExplorerLeft->addItems(fileSystemList);
-    ui->comboBoxExplorerRight->addItems(fileSystemList);
+    for (int i = 0; i < fileSystemEntryList.size(); i++)
+    {
+        ui->comboBoxExplorer1->addItem(fileSystemEntryList.at(i)->getName());
+        ui->comboBoxExplorer2->addItem(fileSystemEntryList.at(i)->getName());
+    }
 
     QShortcut *shortcutF2 = new QShortcut(QKeySequence (Qt::Key_F2), this);
     QObject::connect(shortcutF2, SIGNAL(activated()), ui->buttonQueue, SLOT(click()));
+
+    QShortcut *shortcutF10 = new QShortcut(QKeySequence (Qt::Key_F10), this);
+    QObject::connect(shortcutF10, SIGNAL(activated()), ui->buttonQuit, SLOT(click()));
 
     QShortcut *shortcutF11 = new QShortcut(QKeySequence (Qt::Key_F11), this);
     QObject::connect(shortcutF11, SIGNAL(activated()), ui->buttonSession, SLOT(click()));
@@ -86,16 +91,16 @@ void MainWindow::on_buttonQueue_clicked()
     ppd->show();
     ppd->setPath(path);
 
-    QThread *pT = new QThread(this);
     PathParse *p = new PathParse(path);
+    p->cancel();
 
     connect(ppd, SIGNAL(canceled()), p, SLOT(cancel()));
     connect(p, SIGNAL(progressChanged(int,int,int,double)), ppd, SLOT(updateTextFields(int,int,int,double)));
     connect(p, SIGNAL(data(QStringList)), this, SLOT(getData(QStringList)));
     connect(p, SIGNAL(done()), ppd, SLOT(on_buttonBox_rejected()));
 
-    p->moveToThread(pT);
-    pT->start();
+    p->moveToThread(fileThread);
+
     p->begin();
 
     qDebug() << p->getPathList();
@@ -103,12 +108,12 @@ void MainWindow::on_buttonQueue_clicked()
 
 }
 
-void MainWindow::on_comboBoxExplorerLeft_currentIndexChanged(int index)
+void MainWindow::on_comboBoxExplorer1_currentIndexChanged(int index)
 {
 
 }
 
-void MainWindow::on_comboBoxExplorerRight_currentIndexChanged(int index)
+void MainWindow::on_comboBoxExplorer2_currentIndexChanged(int index)
 {
 
 }
@@ -158,5 +163,47 @@ void MainWindow::getData(QStringList data)
 
 void MainWindow::tst()
 {
+
     qDebug() << "tst";
+}
+
+void MainWindow::on_buttonQuit_clicked()
+{
+    QMessageBox mBox(QMessageBox::NoIcon
+                     ,"Выход"
+                     , "Завершить сеанс и выйти из приложения?"
+                     , QMessageBox::Yes | QMessageBox::No);
+    mBox.setWindowIcon(QIcon(":/images/dialog-question.png"));
+    mBox.setModal(true);
+    mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
+    int ret = mBox.exec();
+
+    if (ret == QMessageBox::Yes)
+    {
+        qApp->quit();
+    }
+    else
+    {
+        return;
+    }
+}
+
+void MainWindow::on_buttonCopy_clicked()
+{
+
+}
+
+void MainWindow::on_buttonMove_clicked()
+{
+
+}
+
+void MainWindow::on_buttonCatalogue_clicked()
+{
+
+}
+
+void MainWindow::on_buttonDelete_clicked()
+{
+
 }

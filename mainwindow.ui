@@ -2,16 +2,22 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
-    <height>137</height>
+    <width>1438</width>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="animated">
+   <bool>false</bool>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -51,7 +57,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBoxExplorerLeft">
+         <widget class="QComboBox" name="comboBoxExplorer1">
           <property name="minimumSize">
            <size>
             <width>200</width>
@@ -73,18 +79,25 @@
          <widget class="QPushButton" name="buttonRefreshLeft">
           <property name="minimumSize">
            <size>
-            <width>40</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="text">
-           <string/>
+           <string>Управление</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Статус</string>
           </property>
          </widget>
         </item>
@@ -144,7 +157,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBoxExplorerRight">
+         <widget class="QComboBox" name="comboBoxExplorer2">
           <property name="minimumSize">
            <size>
             <width>200</width>
@@ -166,18 +179,25 @@
          <widget class="QPushButton" name="buttonRefreshRight">
           <property name="minimumSize">
            <size>
-            <width>40</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>40</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="text">
-           <string/>
+           <string>Управление</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Статус</string>
           </property>
          </widget>
         </item>
@@ -215,7 +235,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayoutButton" stretch="0,0,0,0,0,0,0,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutButton" stretch="0,0,0,0,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinimumSize</enum>
       </property>
@@ -223,20 +243,6 @@
        <widget class="QPushButton" name="buttonQueue">
         <property name="text">
          <string>F2 Очередь</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_7">
-        <property name="text">
-         <string>F3 Просмотр</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="buttonEdit">
-        <property name="text">
-         <string>F4 Правка</string>
         </property>
        </widget>
       </item>
@@ -269,6 +275,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="buttonQuit">
+        <property name="text">
+         <string>F10 Выход</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="buttonSession">
         <property name="text">
          <string>F11  Сессия</string>
@@ -284,7 +297,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1002</width>
+     <width>1438</width>
      <height>28</height>
     </rect>
    </property>

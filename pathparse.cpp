@@ -68,7 +68,6 @@ void PathParse::step()
     //qDebug() << "total size: " << size/(1024*1024) << "Mb";
 
     emit progressChanged(pathList.size(), dirCount, fileCount, size);
-    emit data(pathList);
     emit done();
     //все сходится с Fly desktop manager
 }

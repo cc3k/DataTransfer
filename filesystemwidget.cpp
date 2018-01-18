@@ -78,6 +78,8 @@ void FileSystemWidget::updateRootDir()
     //tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
     tableView->selectRow(0);
     ui->groupBoxFileSystem->setTitle(root);
+
+    watcher->addPath(root);
 }
 
 void FileSystemWidget::updateDirMode()
@@ -185,12 +187,6 @@ void FileSystemWidget::setupWidget()
     dirModel->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     dirModel->setFilter(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot);
 
-    //for testing
-    model_ = new QFileSystemModel;
-    model_->setReadOnly(isReadOnly);
-    model_->setRootPath("/home/projekt");
-    model_->setFilter(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot);
-
     dirModel->setLazyChildCount(true); //Не проверяет есть ли у директории потомки, для таблицы не важно (хотя если считать размеры...)
 
     tableView->setModel(dirModel);
@@ -198,7 +194,7 @@ void FileSystemWidget::setupWidget()
     tableView->verticalHeader()->hide();
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
-    tableView->setColumnWidth(0, this->width()/2);
+    tableView->setColumnWidth(0, this->width() / 2);
     tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
