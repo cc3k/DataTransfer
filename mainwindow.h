@@ -13,8 +13,8 @@
 #include "configxmlreader.h"
 
 #include "copyfile.h"
-#include "pathparse.h"
-#include "fileparsepathdialog.h"
+#include "filesystemfilepath.h"
+#include "filesystemfilepathdialog.h"
 
 
 namespace Ui {
@@ -58,7 +58,6 @@ private:
     QString getRandomString(const int length) const;
     QString generateSessionId() const;
 
-    QThread *fileThread;
 };
 
 #endif // MAINWINDOW_H

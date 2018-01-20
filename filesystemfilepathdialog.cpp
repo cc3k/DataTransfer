@@ -1,25 +1,27 @@
-#include "fileparsepathdialog.h"
-#include "ui_fileparsepathdialog.h"
+#include "filesystemfilepathdialog.h"
+#include "ui_filesystemfilepathdialog.h"
 
-FileParsePathDialog::FileParsePathDialog(QWidget *parent) :
+FileSystemFilePathDialog::FileSystemFilePathDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::FileParsePathDialog)
+    ui(new Ui::FileSystemFilePathDialog)
 {
     ui->setupUi(this);
+    setWindowTitle("Обработка путей элементов");
+    setWindowIcon(QIcon(":/images/drive-harddisk.png"));
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 }
 
-FileParsePathDialog::~FileParsePathDialog()
+FileSystemFilePathDialog::~FileSystemFilePathDialog()
 {
     delete ui;
 }
 
-void FileParsePathDialog::setPath(QString path)
+void FileSystemFilePathDialog::setPath(QString path)
 {
     ui->lineEditPath->setText(path);
 }
 
-void FileParsePathDialog::updateTextFields(int itemCount, int dirCount, int fileCount, double size)
+void FileSystemFilePathDialog::updateTextFields(int itemCount, int dirCount, int fileCount, double size)
 {
     QString humanSize;
 
@@ -38,12 +40,12 @@ void FileParsePathDialog::updateTextFields(int itemCount, int dirCount, int file
     ui->lineEditSize->setText(humanSize);
 }
 
-void FileParsePathDialog::closeDialog()
+void FileSystemFilePathDialog::closeDialog()
 {
     this->close();
 }
 
-void FileParsePathDialog::on_buttonBox_rejected()
+void FileSystemFilePathDialog::on_buttonBox_rejected()
 {
     emit canceled();
     this->close();

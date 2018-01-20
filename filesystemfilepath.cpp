@@ -1,6 +1,6 @@
-#include "pathparse.h"
+#include "filesystemfilepath.h"
 
-PathParse::PathParse(QString path)
+FileSystemFilePath::FileSystemFilePath(QString path)
 {
     this->path = path;
     this->size = 0;
@@ -12,7 +12,7 @@ PathParse::PathParse(QString path)
     this->stopTime = 0;
 }
 
-void PathParse::begin()
+void FileSystemFilePath::begin()
 {
     pathList.clear();
     startTime = QDateTime::currentMSecsSinceEpoch();
@@ -24,10 +24,9 @@ void PathParse::begin()
         //тут еще есть follow symlinks!!!
 
         QMetaObject::invokeMethod(this, "step", Qt::QueuedConnection);
-
 }
 
-void PathParse::step()
+void FileSystemFilePath::step()
 {
     while (it->hasNext() && !isCanceled)
     {
@@ -56,7 +55,6 @@ void PathParse::step()
         // 2nd run (local) time  3860 entries:  175018 files:  133704 dirs:  41314 total size:  3409.61 Mb
         // 3rd run (local) time  899 entries:  175018 files:  133704 dirs:  41314 total size:  3409.61 Mb
         // 4th run (local) time  717 entries:  175018 files:  133704 dirs:  41314 total size:  3409.61 Mb
-
     }
 
     stopTime = QDateTime::currentMSecsSinceEpoch();
@@ -68,16 +66,17 @@ void PathParse::step()
     //qDebug() << "total size: " << size/(1024*1024) << "Mb";
 
     emit progressChanged(pathList.size(), dirCount, fileCount, size);
+    emit data(pathList);
     emit done();
     //все сходится с Fly desktop manager
 }
 
-void PathParse::cancel()
+void FileSystemFilePath::cancel()
 {
     isCanceled = true;
 }
 
-QStringList PathParse::getPathList() const
+QStringList FileSystemFilePath::getPathList() const
 {
     return pathList;
 }

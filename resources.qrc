@@ -10,5 +10,6 @@
         <file>images/dialog-question.png</file>
         <file>images/dialog-warning.png</file>
         <file>config_tst/stations.xml</file>
+        <file>images/drive-harddisk.png</file>
     </qresource>
 </RCC>

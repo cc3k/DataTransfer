@@ -19,8 +19,8 @@ SOURCES += main.cpp\
     configxmlreader.cpp \
     filesystementry.cpp \
     copyfile.cpp \
-    pathparse.cpp \
-    fileparsepathdialog.cpp
+    filesystemfilepath.cpp \
+    filesystemfilepathdialog.cpp
 
 HEADERS  += mainwindow.h \
     customtableview.h \
@@ -29,12 +29,12 @@ HEADERS  += mainwindow.h \
     configxmlreader.h \
     filesystementry.h \
     copyfile.h \
-    pathparse.h \
-    fileparsepathdialog.h
+    filesystemfilepath.h \
+    filesystemfilepathdialog.h
 
 FORMS    += mainwindow.ui \
     filesystemwidget.ui \
-    fileparsepathdialog.ui
+    filesystemfilepathdialog.ui
 
 RESOURCES += \
     resources.qrc

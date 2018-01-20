@@ -14,10 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowModality(Qt::ApplicationModal); //чтобы не переходил фокус при поп-апах
     setWindowIcon(QIcon(":/images/transfer.png"));
 
-
-    fileThread = new QThread(this);
-    fileThread->start();
-
     //load config
     ConfigXmlReader *configXmlReader = new ConfigXmlReader(":/config_tst/stations.xml");
     fileSystemEntryList = configXmlReader->getFileSystemEntryList();
@@ -85,27 +81,31 @@ void MainWindow::on_buttonQueue_clicked()
     //        qDebug() << "cancel";
     //        p->cancel();
     //    }
-    FileParsePathDialog *ppd = new FileParsePathDialog;
-    ppd->setModal(true);
-    ppd->setWindowFlags((ppd->windowFlags() | Qt::WindowStaysOnTopHint));
-    ppd->show();
-    ppd->setPath(path);
+    FileSystemFilePathDialog *pathParserDialog = new FileSystemFilePathDialog;
+    pathParserDialog->setModal(true);
+    pathParserDialog->setWindowFlags((pathParserDialog->windowFlags() | Qt::WindowStaysOnTopHint));
+    pathParserDialog->show();
+    pathParserDialog->setPath(path);
 
-    PathParse *p = new PathParse(path);
-    p->cancel();
+    FileSystemFilePath *pathParse = new FileSystemFilePath(path);
+    QThread *pathParseThread = new QThread(this);
+    pathParse->moveToThread(pathParseThread);
 
-    connect(ppd, SIGNAL(canceled()), p, SLOT(cancel()));
-    connect(p, SIGNAL(progressChanged(int,int,int,double)), ppd, SLOT(updateTextFields(int,int,int,double)));
-    connect(p, SIGNAL(data(QStringList)), this, SLOT(getData(QStringList)));
-    connect(p, SIGNAL(done()), ppd, SLOT(on_buttonBox_rejected()));
+    connect(pathParserDialog, SIGNAL(canceled()), pathParse, SLOT(cancel()));
+    connect(pathParse, SIGNAL(progressChanged(int,int,int,double)), pathParserDialog, SLOT(updateTextFields(int,int,int,double)));
+    connect(pathParse, SIGNAL(data(QStringList)), this, SLOT(getData(QStringList)));
+    connect(pathParse, SIGNAL(done()), pathParserDialog, SLOT(on_buttonBox_rejected()));
 
-    p->moveToThread(fileThread);
+    connect(pathParseThread, SIGNAL(started()), pathParse, SLOT(begin()));
+    connect(pathParse, SIGNAL(done()), pathParseThread, SLOT(quit()));
+    connect(pathParse, SIGNAL(done()), pathParse, SLOT(deleteLater()));
+    connect(pathParseThread, SIGNAL(finished()), pathParseThread, SLOT(deleteLater()));
 
-    p->begin();
+    pathParseThread->start(QThread::LowPriority);
+    //pathParse->begin();
 
-    qDebug() << p->getPathList();
 
-
+    qDebug() << pathParse->getPathList();
 }
 
 void MainWindow::on_comboBoxExplorer1_currentIndexChanged(int index)

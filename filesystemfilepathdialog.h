@@ -1,21 +1,21 @@
-#ifndef FILEPARSEPATHDIALOG_H
-#define FILEPARSEPATHDIALOG_H
+#ifndef FILESYSTEMFILEPATHDIALOG_H
+#define FILESYSTEMFILEPATHDIALOG_H
 
 #include <QDialog>
 #include <QDebug>
 #include <QDialogButtonBox>
 
 namespace Ui {
-class FileParsePathDialog;
+class FileSystemFilePathDialog;
 }
 
-class FileParsePathDialog : public QDialog
+class FileSystemFilePathDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit FileParsePathDialog(QWidget *parent = 0);
-    ~FileParsePathDialog();
+    explicit FileSystemFilePathDialog(QWidget *parent = 0);
+    ~FileSystemFilePathDialog();
     void setPath(QString path);
 
 public slots:
@@ -29,7 +29,7 @@ signals:
     void canceled();
 
 private:
-    Ui::FileParsePathDialog *ui;
+    Ui::FileSystemFilePathDialog *ui;
 };
 
-#endif // FILEPARSEPATHDIALOG_H
+#endif // FILESYSTEMFILEPATHDIALOG_H

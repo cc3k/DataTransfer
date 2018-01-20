@@ -1,5 +1,5 @@
-#ifndef PATHPARSE_H
-#define PATHPARSE_H
+#ifndef FILESYSTEMFILEPATH_H
+#define FILESYSTEMFILEPATH_H
 
 #include <QObject>
 #include <QDateTime>
@@ -9,12 +9,12 @@
 
 #include <QDebug>
 
-class PathParse : public QObject
+class FileSystemFilePath : public QObject
 {
     Q_OBJECT
 public:
-    explicit PathParse(QString path);
-    ~PathParse() {}
+    explicit FileSystemFilePath(QString path);
+    ~FileSystemFilePath() {}
 
     QStringList getPathList() const;
 
@@ -43,4 +43,4 @@ signals:
     void done();
 };
 
-#endif // PATHPARSE_H
+#endif // FILESYSTEMFILEPATH_H
