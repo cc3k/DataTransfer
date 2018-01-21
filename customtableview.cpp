@@ -39,6 +39,8 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
         //selectRow(currentIndex().row() + 1);
         //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Deselect);
 
+        //moveCursor() !!!!!
+
 //        break;
 //    }
     default:

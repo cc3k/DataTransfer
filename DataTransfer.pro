@@ -19,8 +19,10 @@ SOURCES += main.cpp\
     configxmlreader.cpp \
     filesystementry.cpp \
     copyfile.cpp \
-    filesystemfilepath.cpp \
-    filesystemfilepathdialog.cpp
+    filesystemdirread.cpp \
+    filesystemdirreaddialog.cpp \
+    filesystemdeletedialog.cpp \
+    filesystemdircreatedialog.cpp
 
 HEADERS  += mainwindow.h \
     customtableview.h \
@@ -29,12 +31,16 @@ HEADERS  += mainwindow.h \
     configxmlreader.h \
     filesystementry.h \
     copyfile.h \
-    filesystemfilepath.h \
-    filesystemfilepathdialog.h
+    filesystemdirreaddialog.h \
+    filesystemdirread.h \
+    filesystemdeletedialog.h \
+    filesystemdircreatedialog.h
 
 FORMS    += mainwindow.ui \
     filesystemwidget.ui \
-    filesystemfilepathdialog.ui
+    filesystemdirreaddialog.ui \
+    filesystemdeletedialog.ui \
+    filesystemdircreatedialog.ui
 
 RESOURCES += \
     resources.qrc

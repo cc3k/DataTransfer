@@ -1,8 +1,12 @@
-#include "filesystemfilepath.h"
+#include "filesystemdirread.h"
 
-FileSystemFilePath::FileSystemFilePath(QString path)
+FileSystemDirRead::FileSystemDirRead(QString path,
+                                     QFlags<QDirIterator::IteratorFlag> flag,
+                                     QFlags<QDir::Filter> filter)
 {
     this->path = path;
+    this->flag = flag;
+    this->filter = filter;
     this->size = 0;
     this->fileCount = 0;
     this->dirCount = 0;
@@ -12,21 +16,27 @@ FileSystemFilePath::FileSystemFilePath(QString path)
     this->stopTime = 0;
 }
 
-void FileSystemFilePath::begin()
+FileSystemDirRead::~FileSystemDirRead()
+{
+
+}
+
+void FileSystemDirRead::begin()
 {
     pathList.clear();
     startTime = QDateTime::currentMSecsSinceEpoch();
 
+        QDir dir;
         dir.setPath(path);
-        dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+        dir.setFilter(filter);
         qDebug() << "parsing: " << path;
-        it = new QDirIterator(dir, QDirIterator::Subdirectories);
+        it = new QDirIterator(dir, flag);
         //тут еще есть follow symlinks!!!
 
         QMetaObject::invokeMethod(this, "step", Qt::QueuedConnection);
 }
 
-void FileSystemFilePath::step()
+void FileSystemDirRead::step()
 {
     while (it->hasNext() && !isCanceled)
     {
@@ -71,12 +81,7 @@ void FileSystemFilePath::step()
     //все сходится с Fly desktop manager
 }
 
-void FileSystemFilePath::cancel()
+void FileSystemDirRead::cancel()
 {
     isCanceled = true;
-}
-
-QStringList FileSystemFilePath::getPathList() const
-{
-    return pathList;
 }

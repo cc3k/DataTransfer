@@ -1,27 +1,28 @@
-#include "filesystemfilepathdialog.h"
-#include "ui_filesystemfilepathdialog.h"
+#include "filesystemdirreaddialog.h"
+#include "ui_filesystemdirreaddialog.h"
 
-FileSystemFilePathDialog::FileSystemFilePathDialog(QWidget *parent) :
+FileSystemDirReadDialog::FileSystemDirReadDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::FileSystemFilePathDialog)
+    ui(new Ui::FileSystemDirReadDialog)
 {
     ui->setupUi(this);
+    setModal(true);
     setWindowTitle("Обработка путей элементов");
-    setWindowIcon(QIcon(":/images/drive-harddisk.png"));
-    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    //setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::WindowTitleHint| Qt::WindowStaysOnTopHint);
+    //setWindowIcon(QIcon(":/images/drive-harddisk.png"));
 }
 
-FileSystemFilePathDialog::~FileSystemFilePathDialog()
+FileSystemDirReadDialog::~FileSystemDirReadDialog()
 {
     delete ui;
 }
 
-void FileSystemFilePathDialog::setPath(QString path)
+void FileSystemDirReadDialog::setPath(QString path)
 {
     ui->lineEditPath->setText(path);
 }
 
-void FileSystemFilePathDialog::updateTextFields(int itemCount, int dirCount, int fileCount, double size)
+void FileSystemDirReadDialog::updateTextFields(int itemCount, int dirCount, int fileCount, double size)
 {
     QString humanSize;
 
@@ -40,12 +41,12 @@ void FileSystemFilePathDialog::updateTextFields(int itemCount, int dirCount, int
     ui->lineEditSize->setText(humanSize);
 }
 
-void FileSystemFilePathDialog::closeDialog()
+void FileSystemDirReadDialog::closeDialog()
 {
     this->close();
 }
 
-void FileSystemFilePathDialog::on_buttonBox_rejected()
+void FileSystemDirReadDialog::on_buttonBox_rejected()
 {
     emit canceled();
     this->close();

@@ -9,25 +9,29 @@
 
 #include <QDebug>
 
-class FileSystemFilePath : public QObject
+class FileSystemDirRead : public QObject
 {
     Q_OBJECT
 public:
-    explicit FileSystemFilePath(QString path);
-    ~FileSystemFilePath() {}
-
-    QStringList getPathList() const;
+    explicit FileSystemDirRead(QString path,
+                               QFlags<QDirIterator::IteratorFlag> flag = QDirIterator::NoIteratorFlags,
+                               QFlags<QDir::Filter> filter = QDir::Dirs | QDir::Files | QDir::NoSymLinks |
+            QDir::NoDotAndDotDot);
+    ~FileSystemDirRead();
 
 public slots:
     void begin();
-    void step();
     void cancel();
+    void step();
+
+private slots:
+
 
 private:
     QString path;
     QStringList pathList;
-    QDir dir;
     QDirIterator *it;
+
     double size;
     int fileCount;
     int dirCount;
@@ -35,6 +39,9 @@ private:
 
     int startTime;
     int stopTime;
+    QFlags<QDir::Filter> filter;
+    QFlags<QDirIterator::IteratorFlag> flag;
+
     bool isCanceled;
 
 signals:

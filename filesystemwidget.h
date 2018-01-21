@@ -8,10 +8,13 @@
 #include <QFileSystemWatcher>
 #include <QMessageBox>
 #include <QDebug>
+#include <QInputDialog>
 
 #include "customtableview.h"
 #include "customdirmodel.h"
-
+#include "filesystemdircreatedialog.h"
+#include "filesystemdeletedialog.h"
+#include "filesystemdirread.h"
 
 namespace Ui {
 class FileSystemWidget;
@@ -27,10 +30,19 @@ public:
 
    void setupWidget();
 
+   bool isActive() const;
+   QString currentIndex() const;
+
 public slots:
     void setFocus();
     void setFileSystemRW(bool mode);
     void setShowHidden(bool mode);
+
+    void queueItem();
+    void copyItem();
+    void moveItem();
+    void createItem();
+    void deleteItem();
 
 private slots:
     void on_buttonDirMode_clicked();
@@ -68,6 +80,7 @@ private:
 
 signals:
     void error();
+    void looseFocus();
 };
 
 #endif // FILESYSTEMWIDGET_H

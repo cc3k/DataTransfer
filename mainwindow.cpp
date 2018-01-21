@@ -19,9 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     fileSystemEntryList = configXmlReader->getFileSystemEntryList();
     configXmlReader->deleteLater();
 
-    model1 = new FileSystemWidget("ФС1", "/home/projekt");
-    model2 = new FileSystemWidget("ФС2", "/home/projekt");
+    model1 = new FileSystemWidget("ФС1", "/home/projekt", false);
+    model2 = new FileSystemWidget("ФС2", "/home/projekt", false);
 
+    connect(model1, SIGNAL(looseFocus()), model2, SLOT(setFocus()));
+    connect(model2, SIGNAL(looseFocus()), model1, SLOT(setFocus()));
     //rsa ключи забрать к себе
 
     ui->layoutFileExplorer->addWidget(model1,1,0);
@@ -41,6 +43,20 @@ MainWindow::MainWindow(QWidget *parent) :
     QShortcut *shortcutF2 = new QShortcut(QKeySequence (Qt::Key_F2), this);
     QObject::connect(shortcutF2, SIGNAL(activated()), ui->buttonQueue, SLOT(click()));
 
+    QShortcut *shortcutF5 = new QShortcut(QKeySequence (Qt::Key_F5), this);
+    QObject::connect(shortcutF5, SIGNAL(activated()), ui->buttonCopy, SLOT(click()));
+
+    QShortcut *shortcutF6 = new QShortcut(QKeySequence (Qt::Key_F6), this);
+    QObject::connect(shortcutF6, SIGNAL(activated()), ui->buttonMove, SLOT(click()));
+
+    QShortcut *shortcutF7 = new QShortcut(QKeySequence (Qt::Key_F7), this);
+    QObject::connect(shortcutF7, SIGNAL(activated()), model1, SLOT(createItem()));
+    QObject::connect(shortcutF7, SIGNAL(activated()), model2, SLOT(createItem()));
+
+    QShortcut *shortcutF8 = new QShortcut(QKeySequence (Qt::Key_F8), this);
+    QObject::connect(shortcutF8, SIGNAL(activated()), model1, SLOT(deleteItem()));
+    QObject::connect(shortcutF8, SIGNAL(activated()), model2, SLOT(deleteItem()));
+
     QShortcut *shortcutF10 = new QShortcut(QKeySequence (Qt::Key_F10), this);
     QObject::connect(shortcutF10, SIGNAL(activated()), ui->buttonQuit, SLOT(click()));
 
@@ -55,57 +71,28 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buttonQueue_clicked()
 {
-    qDebug() << "queue clicked";
-
     QString path = "/usr";
-    //    QMessageBox mBox(QMessageBox::NoIcon
-    //                     ,"Обработка " + path
-    //                     , "path"
-    //                     , QMessageBox::Cancel);
-    //    mBox.setWindowIcon(QIcon(":/images/dialog-information.png"));
-    //    mBox.setModal(true);
-    //    mBox.setWindowFlags((mBox.windowFlags() | Qt::WindowStaysOnTopHint));
 
-    //    QThread *pT = new QThread(this);
+    FileSystemDirReadDialog *dirReadDialog = new FileSystemDirReadDialog(this);
+    dirReadDialog->show();
+    dirReadDialog->setPath(path);
 
-    //    PathParse *p = new PathParse(path);
-    //    p->moveToThread(pT);
-    //    pT->start();
-    //    p->begin();
+    FileSystemDirRead *dirRead = new FileSystemDirRead(path, QDirIterator::Subdirectories);
+    QThread *dirReadThread = new QThread(this);
+    dirRead->moveToThread(dirReadThread);
 
-    //    connect(p, SIGNAL(progressChanged()), this, SLOT(tst()));
-    //    int ret = mBox.exec();
+    connect(dirReadDialog, SIGNAL(canceled()), dirRead, SLOT(cancel()));
+    connect(dirRead, SIGNAL(progressChanged(int,int,int,double)), dirReadDialog, SLOT(updateTextFields(int,int,int,double)));
+    connect(dirRead, SIGNAL(data(QStringList)), this, SLOT(getData(QStringList)));
+    connect(dirRead, SIGNAL(done()), dirReadDialog, SLOT(on_buttonBox_rejected()));
 
-    //    if (ret == QMessageBox::Cancel)
-    //    {
-    //        qDebug() << "cancel";
-    //        p->cancel();
-    //    }
-    FileSystemFilePathDialog *pathParserDialog = new FileSystemFilePathDialog;
-    pathParserDialog->setModal(true);
-    pathParserDialog->setWindowFlags((pathParserDialog->windowFlags() | Qt::WindowStaysOnTopHint));
-    pathParserDialog->show();
-    pathParserDialog->setPath(path);
+    connect(dirReadThread, SIGNAL(started()), dirRead, SLOT(begin()));
+    connect(dirRead, SIGNAL(done()), dirReadThread, SLOT(quit()));
+    connect(dirRead, SIGNAL(done()), dirRead, SLOT(deleteLater()));
+    connect(dirRead, SIGNAL(done()), dirReadDialog, SLOT(deleteLater()));
+    connect(dirReadThread, SIGNAL(finished()), dirReadThread, SLOT(deleteLater()));
 
-    FileSystemFilePath *pathParse = new FileSystemFilePath(path);
-    QThread *pathParseThread = new QThread(this);
-    pathParse->moveToThread(pathParseThread);
-
-    connect(pathParserDialog, SIGNAL(canceled()), pathParse, SLOT(cancel()));
-    connect(pathParse, SIGNAL(progressChanged(int,int,int,double)), pathParserDialog, SLOT(updateTextFields(int,int,int,double)));
-    connect(pathParse, SIGNAL(data(QStringList)), this, SLOT(getData(QStringList)));
-    connect(pathParse, SIGNAL(done()), pathParserDialog, SLOT(on_buttonBox_rejected()));
-
-    connect(pathParseThread, SIGNAL(started()), pathParse, SLOT(begin()));
-    connect(pathParse, SIGNAL(done()), pathParseThread, SLOT(quit()));
-    connect(pathParse, SIGNAL(done()), pathParse, SLOT(deleteLater()));
-    connect(pathParseThread, SIGNAL(finished()), pathParseThread, SLOT(deleteLater()));
-
-    pathParseThread->start(QThread::LowPriority);
-    //pathParse->begin();
-
-
-    qDebug() << pathParse->getPathList();
+    dirReadThread->start(QThread::LowPriority);
 }
 
 void MainWindow::on_comboBoxExplorer1_currentIndexChanged(int index)

@@ -13,8 +13,9 @@
 #include "configxmlreader.h"
 
 #include "copyfile.h"
-#include "filesystemfilepath.h"
-#include "filesystemfilepathdialog.h"
+#include "filesystemdirread.h"
+#include "filesystemdirreaddialog.h"
+#include "filesystemdircreatedialog.h"
 
 
 namespace Ui {

@@ -17,6 +17,7 @@ FileSystemWidget::FileSystemWidget(QString name, QString root, bool isReadOnly, 
     connect(tableView,SIGNAL(clicked(QModelIndex)), this, SLOT(tableView_clicked(QModelIndex)));
     connect(tableView, SIGNAL(keyEnter()), this, SLOT(enter_pressed()));
     connect(tableView, SIGNAL(keyLeft()), this, SLOT(dirUp()));
+    connect(tableView, SIGNAL(keyTab()), this, SIGNAL(looseFocus()));
 
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->setContentsMargins(0,12,0,0);
@@ -43,6 +44,7 @@ void FileSystemWidget::on_buttonDirMode_clicked()
 {
     isReadOnly=!isReadOnly;
     updateModel();
+    setFocus();
 }
 
 void FileSystemWidget::updateModel()
@@ -76,6 +78,7 @@ void FileSystemWidget::updateRootDir()
     dirModel->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
 
     //tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
+
     tableView->selectRow(0);
     ui->groupBoxFileSystem->setTitle(root);
 
@@ -156,6 +159,7 @@ void FileSystemWidget::dirChange(QModelIndex index)
     //qDebug() << "is accessable" << dirModel->fileInfo(tableView->currentIndex()).isReadable();
 
     tableView->setRootIndex(tableView->currentIndex());
+    //tableView->setCurrentIndex(tableView->rootIndex().child(0,0));
 
     //это выбор элемента
     //tableView->selectionModel()->setCurrentIndex(tableView->indexAt(QPoint(0,0)), QItemSelectionModel::NoUpdate);
@@ -190,6 +194,7 @@ void FileSystemWidget::setupWidget()
     dirModel->setLazyChildCount(true); //Не проверяет есть ли у директории потомки, для таблицы не важно (хотя если считать размеры...)
 
     tableView->setModel(dirModel);
+
     tableView->setColumnHidden(2, true);
     tableView->verticalHeader()->hide();
     tableView->setShowGrid(false);
@@ -222,6 +227,16 @@ void FileSystemWidget::setupWidget()
     }
 }
 
+bool FileSystemWidget::isActive() const
+{
+    return tableView->hasFocus();
+}
+
+QString FileSystemWidget::currentIndex() const
+{
+    return QString();
+}
+
 void FileSystemWidget::tableView_doubleClicked(const QModelIndex &index)
 {
     if (dirModel->fileInfo(index).isDir())
@@ -237,28 +252,117 @@ void FileSystemWidget::tableView_clicked(const QModelIndex &index)
     if (index.isValid())
     {
         tableView->selectRow(index.row());
+
     }
 }
 
 void FileSystemWidget::on_buttonRoot_clicked()
 {
     updateRootDir();
+    setFocus();
 }
 
 void FileSystemWidget::enter_pressed()
 {
     if (dirModel->fileInfo(tableView->currentIndex()).isDir())
     {
+
         dirChange(tableView->currentIndex());
     }
 }
 
 void FileSystemWidget::setFileSystemRW(bool mode)
 {
-
+    isReadOnly = !mode;
 }
 
 void FileSystemWidget::setShowHidden(bool mode)
 {
 
+}
+
+void FileSystemWidget::queueItem()
+{
+
+}
+
+void FileSystemWidget::copyItem()
+{
+
+}
+
+void FileSystemWidget::moveItem()
+{
+
+}
+
+void FileSystemWidget::createItem()
+{
+    if (tableView->hasFocus())
+    {
+
+        FileSystemDirCreateDialog *dirCreateDialog = new FileSystemDirCreateDialog(this);
+
+        if (dirCreateDialog->exec() != QDialog::Rejected)
+        {
+            if (tableView->currentIndex().isValid())
+            {
+                if (dirModel->mkdir(tableView->currentIndex().parent(), dirCreateDialog->getString()).row() == -1)
+                {
+                    qDebug() << "error create " << dirCreateDialog->getString();
+                }
+                else
+                {
+                    qDebug() << dirCreateDialog->getString() + " created";
+                }
+            }
+        }
+        dirCreateDialog->deleteLater();
+    }
+}
+
+void FileSystemWidget::deleteItem()
+{
+    //QString name  = QInputDialog::getText(this, "Name", "Enter a name");
+
+    //qDebug() << name;
+
+    if (tableView->hasFocus())
+    {
+        FileSystemDeleteDialog *deleteDialog = new FileSystemDeleteDialog(this);
+
+        //qDebug() << dirModel->fileInfo(tableView->currentIndex().parent().parent()).absoluteFilePath();
+
+        QModelIndexList selectedList = tableView->selectionModel()->selectedRows();
+        deleteDialog->clearText();
+
+        for (int i = 0; i < selectedList.size(); ++i)
+        {
+            if (dirModel->fileInfo(selectedList.at(i)).isDir())
+            {
+                //qDebug() << "current" << dirModel->fileInfo(selectedList.at(i)).absolutePath();
+                qDebug() << "rootIndex" << dirModel->fileInfo(tableView->rootIndex()).absolutePath();
+
+                qDebug() << "parent of current item" << dirModel->fileInfo(selectedList.at(i).parent()).absoluteFilePath();
+
+                deleteDialog->setText("каталог: " + dirModel->fileInfo(selectedList.at(i)).absoluteFilePath());
+
+                qDebug() << "selected dir " << dirModel->fileInfo(selectedList.at(i)).absoluteFilePath();
+
+                dirModel->rmdir(selectedList.at(i));
+            }
+            if (dirModel->fileInfo(selectedList.at(i)).isFile())
+            {
+                deleteDialog->setText("файл: " + dirModel->fileInfo(selectedList.at(i)).absoluteFilePath());
+                //qDebug() << "selected file " << dirModel->fileInfo(selectedList.at(i)).absoluteFilePath();
+            }
+        }
+        if (deleteDialog->exec() != QDialog::Rejected)
+        {
+
+        }
+
+
+
+    }
 }
