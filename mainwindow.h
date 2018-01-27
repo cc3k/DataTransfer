@@ -34,7 +34,6 @@ private slots:
     void on_comboBoxExplorer1_currentIndexChanged(int index);
     void on_comboBoxExplorer2_currentIndexChanged(int index);
 
-    void on_buttonQueue_clicked();
     void on_buttonCopy_clicked();
     void on_buttonMove_clicked();
     void on_buttonCatalogue_clicked();

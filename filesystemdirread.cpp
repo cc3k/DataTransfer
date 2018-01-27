@@ -23,7 +23,7 @@ FileSystemDirRead::~FileSystemDirRead()
 
 void FileSystemDirRead::begin()
 {
-    pathList.clear();
+    itemList.clear();
     startTime = QDateTime::currentMSecsSinceEpoch();
 
         QDir dir;
@@ -40,18 +40,18 @@ void FileSystemDirRead::step()
 {
     while (it->hasNext() && !isCanceled)
     {
-        pathList.append(it->next());
+        itemList.append(it->next());
         if(it->fileInfo().isFile())
         {
             //qDebug() << it->fileInfo().absoluteFilePath();
             size = size + it->fileInfo().size();
             fileCount++;
-            dirCount = pathList.size() - fileCount;
+            dirCount = itemList.size() - fileCount;
 
             int i = fileCount;
             if (i % 10 ==  0)
             {
-                emit progressChanged(pathList.size(), dirCount, fileCount, size);
+                emit progressChanged(itemList.size(), dirCount, fileCount, size);
             }
 
         }
@@ -75,13 +75,14 @@ void FileSystemDirRead::step()
     //qDebug() << "subdirs: " << pathList.size() - fileCount;
     //qDebug() << "total size: " << size/(1024*1024) << "Mb";
 
-    emit progressChanged(pathList.size(), dirCount, fileCount, size);
-    emit data(pathList);
+    emit progressChanged(itemList.size(), dirCount, fileCount, size);
+    emit data(itemList);
     emit done();
     //все сходится с Fly desktop manager
 }
 
 void FileSystemDirRead::cancel()
 {
+    qDebug() << "cancel on dirRead";
     isCanceled = true;
 }

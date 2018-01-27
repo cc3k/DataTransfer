@@ -40,9 +40,6 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->comboBoxExplorer2->addItem(fileSystemEntryList.at(i)->getName());
     }
 
-    QShortcut *shortcutF2 = new QShortcut(QKeySequence (Qt::Key_F2), this);
-    QObject::connect(shortcutF2, SIGNAL(activated()), ui->buttonQueue, SLOT(click()));
-
     QShortcut *shortcutF5 = new QShortcut(QKeySequence (Qt::Key_F5), this);
     QObject::connect(shortcutF5, SIGNAL(activated()), ui->buttonCopy, SLOT(click()));
 
@@ -69,7 +66,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_buttonQueue_clicked()
+void MainWindow::tst()
 {
     QString path = "/usr";
 
@@ -92,7 +89,7 @@ void MainWindow::on_buttonQueue_clicked()
     connect(dirRead, SIGNAL(done()), dirReadDialog, SLOT(deleteLater()));
     connect(dirReadThread, SIGNAL(finished()), dirReadThread, SLOT(deleteLater()));
 
-    dirReadThread->start(QThread::LowPriority);
+    dirReadThread->start();
 }
 
 void MainWindow::on_comboBoxExplorer1_currentIndexChanged(int index)
@@ -146,12 +143,6 @@ void MainWindow::on_buttonSession_clicked()
 void MainWindow::getData(QStringList data)
 {
     qDebug() << "got " << data.size() << " items";
-}
-
-void MainWindow::tst()
-{
-
-    qDebug() << "tst";
 }
 
 void MainWindow::on_buttonQuit_clicked()

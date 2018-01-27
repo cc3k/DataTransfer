@@ -1,1 +1,1 @@
-sshfs cc3k@192.168.56.102:/usr /mount.storage/cc3k_192.168.56.102 -o ServerAliveInterval=5,ServerAliveCountMax=3,compression=yes,identityFile=/home/projekt/.ssh/id_rsa
+sshfs projekt@192.168.56.105:/home/projekt /mount.storage/projekt_192.168.56.105 -o compression=yes,identityFile=/home/projekt/.ssh/id_rsa

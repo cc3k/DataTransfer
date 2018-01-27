@@ -29,7 +29,7 @@ private slots:
 
 private:
     QString path;
-    QStringList pathList;
+    QStringList itemList;
     QDirIterator *it;
 
     double size;

@@ -235,17 +235,10 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayoutButton" stretch="0,0,0,0,0,0,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutButton" stretch="0,0,0,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinimumSize</enum>
       </property>
-      <item>
-       <widget class="QPushButton" name="buttonQueue">
-        <property name="text">
-         <string>F2 Очередь</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QPushButton" name="buttonCopy">
         <property name="text">

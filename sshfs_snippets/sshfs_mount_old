@@ -1,0 +1,1 @@
+sshfs projekt@192.168.56.105:/usr /mount.storage/projekt_192.168.56.105 -o ServerAliveInterval=3,ServerAliveCountMax=3,compression=yes,identityFile=/home/projekt/.ssh/id_rsa

@@ -48,6 +48,7 @@ void FileSystemDirReadDialog::closeDialog()
 
 void FileSystemDirReadDialog::on_buttonBox_rejected()
 {
+    qDebug() << "rejected_pressed";
     emit canceled();
     this->close();
     deleteLater();

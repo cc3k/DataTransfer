@@ -323,43 +323,58 @@ void FileSystemWidget::createItem()
 
 void FileSystemWidget::deleteItem()
 {
-    //QString name  = QInputDialog::getText(this, "Name", "Enter a name");
-
-    //qDebug() << name;
-
     if (tableView->hasFocus())
     {
         FileSystemDeleteDialog *deleteDialog = new FileSystemDeleteDialog(this);
 
-        //qDebug() << dirModel->fileInfo(tableView->currentIndex().parent().parent()).absoluteFilePath();
-
         QModelIndexList selectedList = tableView->selectionModel()->selectedRows();
         deleteDialog->clearText();
 
+        QStringList dirList;
+        QStringList fileList;
+
         for (int i = 0; i < selectedList.size(); ++i)
         {
+            QString selected = dirModel->fileInfo(selectedList.at(i)).absoluteFilePath();
+
             if (dirModel->fileInfo(selectedList.at(i)).isDir())
             {
-                //qDebug() << "current" << dirModel->fileInfo(selectedList.at(i)).absolutePath();
-                qDebug() << "rootIndex" << dirModel->fileInfo(tableView->rootIndex()).absolutePath();
+                QString rootIndex = dirModel->fileInfo(tableView->rootIndex()).absolutePath();
 
-                qDebug() << "parent of current item" << dirModel->fileInfo(selectedList.at(i).parent()).absoluteFilePath();
-
-                deleteDialog->setText("каталог: " + dirModel->fileInfo(selectedList.at(i)).absoluteFilePath());
-
-                qDebug() << "selected dir " << dirModel->fileInfo(selectedList.at(i)).absoluteFilePath();
-
-                dirModel->rmdir(selectedList.at(i));
+                if (rootIndex != selected)
+                {
+                    deleteDialog->setText("каталог: " + selected);
+                    dirList.append(selected);
+                }
             }
+
             if (dirModel->fileInfo(selectedList.at(i)).isFile())
             {
-                deleteDialog->setText("файл: " + dirModel->fileInfo(selectedList.at(i)).absoluteFilePath());
-                //qDebug() << "selected file " << dirModel->fileInfo(selectedList.at(i)).absoluteFilePath();
+                deleteDialog->setText("файл: " + selected);
+                fileList.append(selected);
             }
         }
+
         if (deleteDialog->exec() != QDialog::Rejected)
         {
+            for (int i = 0; i < dirList.size(); i++)
+            {
+                QDir dir(dirList.at(i));
+                qDebug() << dir.absolutePath();
+                qDebug() << dir.removeRecursively();
+            }
 
+            for (int i = 0; i <fileList.size(); i++)
+            {
+                QFile file(fileList.at(i));
+                qDebug() << file.fileName();
+                qDebug() << file.remove();
+            }
+        }
+        else
+        {
+            dirList.clear();
+            fileList.clear();
         }
 
 

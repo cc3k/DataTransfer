@@ -1,4 +1,4 @@
-if grep -qs '/mount.storage/cc3k_192.168.56.102' /proc/mounts; then
+if grep -qs '/mount.storage/projekt_192.168.56.105' /proc/mounts; then
     echo "It's mounted."
 else
     echo "It's not mounted."
