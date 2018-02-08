@@ -8,6 +8,7 @@ OperationCalculatorWidget::OperationCalculatorWidget(QWidget *parent) : QDialog(
     setWindowTitle("Обработка файлов и каталогов");
 
     doubleCancel = false;
+    buttonShown = true;
 
     vBox = new QVBoxLayout;
     hBox1 = new QHBoxLayout;
@@ -53,10 +54,8 @@ OperationCalculatorWidget::OperationCalculatorWidget(QWidget *parent) : QDialog(
     vBox->addLayout(hBox6);
     vBox->addWidget(bBox);
 
+    setButtonsRemove(false);
     setLayout(vBox);
-
-    connect(bBox, &QDialogButtonBox::accepted, this, &OperationCalculatorWidget::accept);
-    connect(bBox, &QDialogButtonBox::rejected, this, &OperationCalculatorWidget::reject);
 }
 
 OperationCalculatorWidget::~OperationCalculatorWidget()
@@ -103,9 +102,20 @@ void OperationCalculatorWidget::setData(int total, int dir, int file, int err, d
     lSize->setText(humanSize);
 }
 
-void OperationCalculatorWidget::hide()
+void OperationCalculatorWidget::setButtonsRemove(bool remove)
 {
-    QDialog::hide();
+    if(remove && buttonShown)
+    {
+        bBox->hide();
+        buttonShown = false;
+    }
+    else
+    {
+        bBox->show();
+        connect(bBox, &QDialogButtonBox::accepted, this, &OperationCalculatorWidget::accept);
+        connect(bBox, &QDialogButtonBox::rejected, this, &OperationCalculatorWidget::reject);
+        buttonShown = true;
+    }
 }
 
 void OperationCalculatorWidget::accept()
@@ -116,6 +126,11 @@ void OperationCalculatorWidget::accept()
 
 void OperationCalculatorWidget::reject()
 {
+    if(!buttonShown)
+    {
+        return;
+    }
+
     if (!doubleCancel)
     {
         emit canceled();

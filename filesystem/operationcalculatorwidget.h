@@ -23,7 +23,7 @@ public:
 public slots:
     //void setItems(QString path);
     void setData(int total, int dir, int file, int err, double size);
-    void hide();
+    void setButtonsRemove(bool remove);
 
 protected slots:
     void accept();
@@ -48,6 +48,7 @@ private:
     QDialogButtonBox *bBox;
 
     bool doubleCancel;
+    bool buttonShown;
 
     void showEvent(QShowEvent *event);
 

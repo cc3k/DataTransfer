@@ -7,6 +7,9 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QThread>
+#include <QDateTime>
+#include <QCoreApplication>
 
 #include "filesystem/operationcalculator.h"
 #include "filesystem/operationcalculatorwidget.h"
@@ -21,7 +24,7 @@ public:
     void setList(const QStringList &value);
     void setDestination(const QString &value);
 
-    void start();
+    void open();
 private:
     OperationCalculator *calc;
     OperationCalculatorWidget *widget;
