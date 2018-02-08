@@ -1,17 +1,20 @@
-#ifndef COPYFILE_H
-#define COPYFILE_H
+#ifndef OPERATIONCOPY_H
+#define OPERATIONCOPY_H
 
 #include <QObject>
 #include <QFile>
 
+#include <QTime>
+#include <QCoreApplication>
+
 #include <QDebug>
 
-class CopyFile : public QObject {
+class OperationCopy : public QObject {
     Q_OBJECT
     Q_PROPERTY(qreal progress READ progress WRITE setProgress NOTIFY progressChanged)
 public:
-    CopyFile(QString source, QString destination, quint64 bSize = 1024 * 1024);
-    ~CopyFile();
+    OperationCopy(QString source, QString destination, quint64 bSize = 1024 * 1024);
+    ~OperationCopy();
 
     qreal progress() const;
     void setProgress(qreal value);
@@ -22,7 +25,7 @@ public slots:
     void cancel();
 
 signals:
-    void progressChanged();
+    void progressChanged(qreal progress);
     void done();
 
 private:
@@ -34,7 +37,9 @@ private:
     quint64 fileSize;
     quint64 position;
     char * buff;
+
+    void delay(int msec);
     //QElapsedTimer timer;
 };
 
-#endif // COPYFILE_H
+#endif // OPERATIONCOPY_H

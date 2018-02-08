@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/transfer.png</file>
         <file>images/dialog-cancel.png</file>
         <file>images/dialog-close.png</file>
         <file>images/dialog-error.png</file>
@@ -9,7 +8,9 @@
         <file>images/dialog-ok.png</file>
         <file>images/dialog-question.png</file>
         <file>images/dialog-warning.png</file>
-        <file>config_tst/stations.xml</file>
         <file>images/drive-harddisk.png</file>
+        <file>images/transfer.png</file>
+        <file>config/stations.xml</file>
+        <file>images/drive-remote.png</file>
     </qresource>
 </RCC>

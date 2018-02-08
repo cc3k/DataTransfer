@@ -9,22 +9,21 @@
 
 #include "filesystementry.h"
 
-class ConfigXmlReader : public QObject
+class ConfigReader : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConfigXmlReader(QString fileName, QObject *parent = 0);
-    ~ConfigXmlReader() {}
+    explicit ConfigReader(QString fileName, QObject *parent = 0);
+    ~ConfigReader();
 
-    QList<FileSystemEntry *> getFileSystemEntryList();
+    QList<FileSystemEntry *> getEntryList();
 
 private:
     QString fileName;
     QFile *file;
     QXmlStreamReader *reader;
 
-    QList<FileSystemEntry *> fileSystemEntryList;
-
+    QList<FileSystemEntry*> entryList;
 
 signals:
 
