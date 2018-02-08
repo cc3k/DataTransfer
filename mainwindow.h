@@ -41,6 +41,8 @@ private slots:
     void on_buttonQuit_clicked();
     void on_buttonSession_clicked();
 
+    void panelFocusListener();
+
     //фуфло, отсюда убрать
     void getData(QStringList data);
     void tst();

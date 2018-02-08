@@ -2,7 +2,7 @@
 
 CustomTableView::CustomTableView(QWidget *parent) : QTableView(parent)
 {
-
+    setFocusPolicy(Qt::NoFocus);
 }
 
 void CustomTableView::keyPressEvent(QKeyEvent *event)
@@ -29,9 +29,9 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
         break;
     }
 
-//    case Qt::Key_Space:
-//    case Qt::Key_Insert:
-//    {
+        //    case Qt::Key_Space:
+        //    case Qt::Key_Insert:
+        //    {
         //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Toggle);
         //selectRow(currentIndex().row() + 1);
 
@@ -41,11 +41,45 @@ void CustomTableView::keyPressEvent(QKeyEvent *event)
 
         //moveCursor() !!!!!
 
-//        break;
-//    }
+        //        break;
+        //    }
+
+    case Qt::Key_Space:
+    case Qt::Key_Insert:
+    {
+        emit keySpace();
+        //selectionModel()->setCurrentIndex(currentIndex(), QItemSelectionModel::Toggle);
+
+        //selectRow(currentIndex().row() + 1);
+
+     //   moveCursor() !!!!!
+
+                break;
+    }
+
     default:
         QTableView::keyPressEvent(event);
         break;
     }
 
+}
+
+void CustomTableView::focusInEvent(QFocusEvent *event)
+{
+
+    isFocused = true;
+    selectRow(0);
+    emit getFocus();
+}
+
+void CustomTableView::focusOutEvent(QFocusEvent *event)
+{
+    isFocused = false;
+    clearSelection();
+    emit looseFocus();
+}
+
+bool CustomTableView::getIsFocused() const
+{
+    return isFocused;
 }

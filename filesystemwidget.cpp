@@ -17,7 +17,12 @@ FileSystemWidget::FileSystemWidget(QString name, QString root, bool isReadOnly, 
     connect(tableView,SIGNAL(clicked(QModelIndex)), this, SLOT(tableView_clicked(QModelIndex)));
     connect(tableView, SIGNAL(keyEnter()), this, SLOT(enter_pressed()));
     connect(tableView, SIGNAL(keyLeft()), this, SLOT(dirUp()));
+    connect(tableView, SIGNAL(keySpace()), this, SLOT(kspace()));
     connect(tableView, SIGNAL(keyTab()), this, SIGNAL(looseFocus()));
+
+    connect(tableView, SIGNAL(getFocus()), this, SIGNAL(getFocus()));
+    connect(tableView, SIGNAL(getFocus()), this, SLOT(gotFocus()));
+    connect(tableView, SIGNAL(looseFocus()), this, SIGNAL(looseFocus()));
 
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->setContentsMargins(0,12,0,0);
@@ -44,13 +49,13 @@ void FileSystemWidget::on_buttonDirMode_clicked()
 {
     isReadOnly=!isReadOnly;
     updateModel();
-    setFocus();
 }
 
 void FileSystemWidget::updateModel()
 {
     updateDirMode();
-    ui->groupBoxFileSystem->setTitle(root);
+    currentDir = root;
+    ui->groupBoxFileSystem->setTitle(currentDir);
 }
 
 void FileSystemWidget::updateRootDir()
@@ -80,7 +85,8 @@ void FileSystemWidget::updateRootDir()
     //tableView->setCurrentIndex(tableView->indexAt(QPoint(0,0)));
 
     tableView->selectRow(0);
-    ui->groupBoxFileSystem->setTitle(root);
+    currentDir = root;
+    ui->groupBoxFileSystem->setTitle(currentDir);
 
     watcher->addPath(root);
 }
@@ -142,7 +148,8 @@ void FileSystemWidget::dirChange(QModelIndex index)
 
     //tableView->clearSelection(); //беp него тоже неплохо
 
-    ui->groupBoxFileSystem->setTitle(dirModel->filePath(tableView->currentIndex()));
+    currentDir = dirModel->filePath(tableView->currentIndex());
+    ui->groupBoxFileSystem->setTitle(currentDir);
 
     if (dirModel->filePath(tableView->currentIndex()) == root)
     {
@@ -184,6 +191,28 @@ void FileSystemWidget::dirUp()
     }
 }
 
+void FileSystemWidget::gotFocus()
+{
+    qDebug() << "gotFocus";
+}
+
+void FileSystemWidget::kspace()
+{
+    qDebug() << "kspace";
+    qDebug() << tableView->model()->setData(tableView->currentIndex(), Qt::TextColorRole);
+    tableView->selectRow(tableView->currentIndex().row() +1);
+}
+
+QString FileSystemWidget::getCurrentDir() const
+{
+    return currentDir;
+}
+
+bool FileSystemWidget::isActive()
+{
+    return tableView->hasFocus();
+}
+
 void FileSystemWidget::setupWidget()
 {
     dirModel = new CustomDirModel(this);
@@ -200,7 +229,7 @@ void FileSystemWidget::setupWidget()
     tableView->setShowGrid(false);
     tableView->horizontalHeader()->setStretchLastSection(true);
     tableView->setColumnWidth(0, this->width() / 2);
-    tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tableView->setSelectionMode(QAbstractItemView::NoSelection);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setAlternatingRowColors(true);
@@ -225,11 +254,6 @@ void FileSystemWidget::setupWidget()
     {
         qDebug() << "error open " << root;
     }
-}
-
-bool FileSystemWidget::isActive() const
-{
-    return tableView->hasFocus();
 }
 
 QString FileSystemWidget::currentIndex() const
@@ -259,7 +283,6 @@ void FileSystemWidget::tableView_clicked(const QModelIndex &index)
 void FileSystemWidget::on_buttonRoot_clicked()
 {
     updateRootDir();
-    setFocus();
 }
 
 void FileSystemWidget::enter_pressed()

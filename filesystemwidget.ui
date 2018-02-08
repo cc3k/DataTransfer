@@ -10,6 +10,9 @@
     <height>87</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>FileSystemWidget</string>
   </property>
@@ -85,6 +88,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>/</string>
         </property>
@@ -108,6 +114,9 @@
          <font>
           <kerning>true</kerning>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
          <string>NA</string>

@@ -17,6 +17,7 @@ private:
 
 protected:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
 };
 
 #endif // CUSTOMDIRMODEL_H

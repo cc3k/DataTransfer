@@ -70,6 +70,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
           </property>
@@ -89,6 +92,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
            <string>Управление</string>
           </property>
@@ -96,6 +102,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
            <string>Статус</string>
           </property>
@@ -170,6 +179,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
           </property>
@@ -189,6 +201,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
            <string>Управление</string>
           </property>
@@ -196,6 +211,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_2">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
            <string>Статус</string>
           </property>
@@ -241,6 +259,9 @@
       </property>
       <item>
        <widget class="QPushButton" name="buttonCopy">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F5 Копирование</string>
         </property>
@@ -248,6 +269,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonMove">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F6 Перемещение</string>
         </property>
@@ -255,6 +279,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonCatalogue">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F7 Каталог</string>
         </property>
@@ -262,6 +289,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonDelete">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F8 Удаление</string>
         </property>
@@ -269,6 +299,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonQuit">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F10 Выход</string>
         </property>
@@ -276,6 +309,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonSession">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="text">
          <string>F11  Сессия</string>
         </property>

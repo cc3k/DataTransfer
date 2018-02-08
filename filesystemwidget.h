@@ -28,10 +28,11 @@ public:
     explicit FileSystemWidget(QString name, QString root, bool isReadOnly = true, QWidget *parent = 0);
     ~FileSystemWidget();
 
-   void setupWidget();
+    void setupWidget();
 
-   bool isActive() const;
-   QString currentIndex() const;
+    QString currentIndex() const;
+    QString getCurrentDir() const;
+    bool isActive();
 
 public slots:
     void setFocus();
@@ -54,6 +55,10 @@ private slots:
     void dirChange(QModelIndex index);
     void dirUp();
 
+    void gotFocus();
+
+    void kspace();
+
 private:
     Ui::FileSystemWidget *ui;
 
@@ -64,6 +69,8 @@ private:
     int parentRow;
     QModelIndex parentIndex;
 
+    QString currentDir; //текущая папка
+    QString previousDir; //предыдущая папка
     QString root;
     QString header;
     bool isReadOnly;
@@ -80,6 +87,7 @@ private:
 
 signals:
     void error();
+    void getFocus();
     void looseFocus();
 };
 

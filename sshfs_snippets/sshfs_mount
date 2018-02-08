@@ -1,1 +1,2 @@
-sshfs projekt@192.168.56.105:/home/projekt /mount.storage/projekt_192.168.56.105 -o compression=yes,identityFile=/home/projekt/.ssh/id_rsa
+sshfs projekt@192.168.56.101:/home/projekt /mount.storage/projekt_192.168.56.101 -o compression=yes,identityFile=/home/projekt/.ssh/id_rsa,nonempty
+sshfs projekt@192.168.56.105:/home/projekt /mount.storage/projekt_192.168.56.105 -o compression=yes,identityFile=/home/projekt/.ssh/id_rsa,nonempty

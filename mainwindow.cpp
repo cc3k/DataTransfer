@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowModality(Qt::ApplicationModal); //чтобы не переходил фокус при поп-апах
     setWindowIcon(QIcon(":/images/transfer.png"));
 
+
     //load config
     ConfigXmlReader *configXmlReader = new ConfigXmlReader(":/config_tst/stations.xml");
     fileSystemEntryList = configXmlReader->getFileSystemEntryList();
@@ -33,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     model1->setupWidget();
     model2->setupWidget();
+
+    connect(model1, SIGNAL(getFocus()), this, SLOT(panelFocusListener()));
+    connect(model2, SIGNAL(getFocus()), this, SLOT(panelFocusListener()));
 
     for (int i = 0; i < fileSystemEntryList.size(); i++)
     {
@@ -139,6 +143,12 @@ void MainWindow::on_buttonSession_clicked()
         setWindowTitle("ФПО ВКС. Идентификатор сессии:[" + sessionId + "]");
     }
 }
+
+void MainWindow::panelFocusListener()
+{
+    qDebug() << "focus changed";
+}
+
 
 void MainWindow::getData(QStringList data)
 {
