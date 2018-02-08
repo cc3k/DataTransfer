@@ -198,19 +198,19 @@ void MainWindow::on_buttonProperties_clicked()
 
     if(activePanel->getSelection().size() == 0)
     {
-        widget->setItems(activePanel->getCurrentItem());
+        //widget->setItems(activePanel->getCurrentItem());
         list << activePanel->getCurrentItem();
     }
 
     if(activePanel->getSelection().size() == 1)
     {
-        widget->setItems(activePanel->getSelection().first());
+        //widget->setItems(activePanel->getSelection().first());
         list = activePanel->getSelection();
     }
 
     if(activePanel->getSelection().size() > 1)
     {
-        widget->setItems(QString::number(activePanel->getSelection().size()));
+        //widget->setItems(QString::number(activePanel->getSelection().size()));
         list = activePanel->getSelection();
     }
 
