@@ -2,21 +2,24 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QDebug>
+#include <QMessageBox>
+#include <QDialog>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QCloseEvent>
 #include <QShortcut>
-#include <QGroupBox>
-#include <QFileInfoList>
-#include <QDir>
+#include <QDateTime>
+#include <QThread>
+#include <QTimer>
 
-#include "filesystemwidget.h"
-#include "filesystementry.h"
-#include "configxmlreader.h"
+#include <QDebug>
 
-#include "copyfile.h"
-#include "filesystemdirread.h"
-#include "filesystemdirreaddialog.h"
-#include "filesystemdircreatedialog.h"
-
+#include "filesystem/panelwidget.h"
+#include "filesystem/operationcalculator.h"
+#include "filesystem/operationcalculatorwidget.h"
+#include "filesystem/operationcopydialogwidget.h"
+#include "filesystem/operationcopywidget.h"
+#include "filesystem/operationcopy.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,9 +34,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_comboBoxExplorer1_currentIndexChanged(int index);
-    void on_comboBoxExplorer2_currentIndexChanged(int index);
-
+    void on_buttonProperties_clicked();
     void on_buttonCopy_clicked();
     void on_buttonMove_clicked();
     void on_buttonCatalogue_clicked();
@@ -41,23 +42,31 @@ private slots:
     void on_buttonQuit_clicked();
     void on_buttonSession_clicked();
 
-    //фуфло, отсюда убрать
-    void getData(QStringList data);
-    void tst();
+    void showPanelBoxLeft();
+    void showPanelBoxRight();
+
+    void setCurrentPanel(PanelWidget *widget);
+    void itemChanged();
+
+    void readError(QString path);
 
 private:
     Ui::MainWindow *ui;
 
-    FileSystemWidget *model1;
-    FileSystemWidget *model2;
-
-    QList<FileSystemEntry *> fileSystemEntryList;
-
     QString sessionId;
+
+    PanelWidget *panelLeft;
+    PanelWidget *panelRight;
+
+    PanelWidget *activePanel;
+    PanelWidget *passivePanel;
 
     QString getRandomString(const int length) const;
     QString generateSessionId() const;
 
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

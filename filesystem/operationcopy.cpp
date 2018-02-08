@@ -1,33 +1,36 @@
-#include "copyfile.h"
+#include "operationcopy.h"
 
-
-CopyFile::CopyFile(QString source, QString destination, quint64 bSize) : sourceFile(source), destinationFile(destination)
+OperationCopy::OperationCopy(QString source, QString destination, quint64 bSize)
 {
+    this->sourceFile.setFileName(source);
+    this->destinationFile.setFileName(destination);
     this->isCancelled = false;
     this->bufferSize = bSize;
     this->progressValue = 0.0;
     this->position = 0;
 }
 
-CopyFile::~CopyFile()
+OperationCopy::~OperationCopy()
 {
     free(buff);
 }
 
-qreal CopyFile::progress() const
+qreal OperationCopy::progress() const
 {
     return progressValue;
 }
 
-void CopyFile::setProgress(qreal value)
+void OperationCopy::setProgress(qreal value)
 {
-    if (value != progressValue) {
+    if (value != progressValue)
+    {
         progressValue = value;
-        emit progressChanged();
+        qDebug() << QString::number(value);
+        emit progressChanged(value);
     }
 }
 
-void CopyFile::begin()
+void OperationCopy::begin()
 {
     if (!sourceFile.open(QIODevice::ReadOnly))
     {
@@ -66,7 +69,7 @@ void CopyFile::begin()
     //timer.start();
 }
 
-void CopyFile::step()
+void OperationCopy::step()
 {
     if (!isCancelled)
     {
@@ -79,8 +82,9 @@ void CopyFile::step()
             position += l;
             sourceFile.seek(position);
             destinationFile.seek(position);
+            //qDebug() << QString::number((qreal)position / fileSize);
             setProgress((qreal)position / fileSize);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(100)); // for testing
+            delay(500);
             QMetaObject::invokeMethod(this, "step", Qt::QueuedConnection);
         }
         else
@@ -100,7 +104,14 @@ void CopyFile::step()
     }
 }
 
-void CopyFile::cancel()
+void OperationCopy::cancel()
 {
     isCancelled = true;
+}
+
+void OperationCopy::delay(int msec)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(msec);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
